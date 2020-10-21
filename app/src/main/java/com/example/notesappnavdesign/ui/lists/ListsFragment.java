@@ -18,18 +18,19 @@ public class ListsFragment extends Fragment {
 
     private ListsViewModel listsViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        listsViewModel =
-                ViewModelProviders.of(this).get(ListsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_lists, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        listsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+//    public View onCreateView(@NonNull LayoutInflater inflater,
+//                             ViewGroup container, Bundle savedInstanceState) {
+//        listsViewModel =
+//                ViewModelProviders.of(this).get(ListsViewModel.class);
+//        View root = inflater.inflate(R.layout.fragment_lists, container, false);
+//        final TextView textView = root.findViewById(R.id.text_home);
+//        listsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
+//        return root;
+//    }
+
 }
