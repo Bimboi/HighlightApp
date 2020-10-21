@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Basic TODO</string>
+    <string name="title_lists">Lists</string>
+    <string name="title_today">Today</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_important">Important</string>
+    <string name="title_overdue">Overdue</string>
+    <string name="title_finished">Finished</string>
+</resources>

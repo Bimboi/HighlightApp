@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_lists">
+
+    <fragment
+        android:id="@+id/navigation_lists"
+        android:name="com.example.notesappnavdesign.ui.lists.ListsFragment"
+        android:label="@string/title_lists"
+        tools:layout="@layout/fragment_lists" />
+
+    <fragment
+        android:id="@+id/navigation_today"
+        android:name="com.example.notesappnavdesign.ui.today.TodayFragment"
+        android:label="@string/title_today"
+        tools:layout="@layout/fragment_today" />
+
+    <fragment
+        android:id="@+id/navigation_schedules"
+        android:name="com.example.notesappnavdesign.ui.schedules.SchedulesFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedules" />
+    <fragment
+        android:id="@+id/navigation_important"
+        android:name="com.example.notesappnavdesign.ui.important.ImportantFragment"
+        android:label="@string/title_important"
+        tools:layout="@layout/fragment_important" />
+    <fragment
+        android:id="@+id/navigation_overdue"
+        android:name="com.example.notesappnavdesign.ui.overdue.OverdueFragment"
+        android:label="@string/title_overdue" />
+</navigation>
