@@ -30,5 +30,6 @@
     <fragment
         android:id="@+id/navigation_overdue"
         android:name="com.example.notesappnavdesign.ui.overdue.OverdueFragment"
-        android:label="@string/title_overdue" />
+        android:label="@string/title_overdue"
+        tools:layout="@layout/fragment_overdue"/>
 </navigation>
