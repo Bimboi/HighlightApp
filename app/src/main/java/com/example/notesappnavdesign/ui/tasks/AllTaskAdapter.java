@@ -1,51 +1,53 @@
-package com.example.notesappnavdesign;
+package com.example.notesappnavdesign.ui.tasks;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.notesappnavdesign.ItemTask;
+import com.example.notesappnavdesign.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListHolder> {
-    private List<ItemList> allItemList = new ArrayList<>();
+public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHolder> {
+    private List<ItemTask> allItemTask = new ArrayList<>();
     private OnItemClickListener listener;
 
     @NonNull
     @Override
-    public ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewItem = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
-        return new ListHolder(viewItem);
+        return new TaskHolder(viewItem);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListHolder holder, int position) {
-        ItemList currentItemList = allItemList.get(position);
-        holder.textViewItemListName.setText(currentItemList.getListName());
+    public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
+        ItemTask currentItemTask = allItemTask.get(position);
+        holder.textViewItemListName.setText(currentItemTask.getTaskName());
 
     }
 
     @Override
     public int getItemCount() {
-        return allItemList.size();
+        return allItemTask.size();
     }
 
-    public void setAllItemList(List<ItemList> allItemList){
-        this.allItemList = allItemList;
+    public void setAllItemTask(List<ItemTask> allItemTask){
+        this.allItemTask = allItemTask;
         notifyDataSetChanged();
     }
 
-    class ListHolder extends RecyclerView.ViewHolder{
+    class TaskHolder extends RecyclerView.ViewHolder{
         private TextView textViewItemListName;
 
-        public ListHolder(final View itemView){
+        public TaskHolder(final View itemView){
             super(itemView);
             textViewItemListName = itemView.findViewById(R.id.itemListName);
 
@@ -54,7 +56,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListHolder> {
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if(listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(allItemList.get(position));
+                        listener.onItemClick(allItemTask.get(position));
                     }
                 }
             });
@@ -62,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListHolder> {
     }
 
     public interface OnItemClickListener{
-        void onItemClick(ItemList itemList);
+        void onItemClick(ItemTask itemTask);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

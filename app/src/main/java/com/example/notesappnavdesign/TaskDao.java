@@ -10,16 +10,16 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface ListDao {
-    @Query("Select * FROM ItemList")
-    LiveData<List<ItemList>> getAllList();
+public interface TaskDao {
+    @Query("Select * FROM ItemTask")
+    LiveData<List<ItemTask>> getAllTask();
 
     @Insert
-    void insertList(ItemList itemList);
+    void insertTask(ItemTask itemTask);
 
     @Update
-    void updateList(ItemList itemList);
+    void updateTask(ItemTask itemTask);
 
     @Delete
-    void deleteList(ItemList itemList);
+    void deleteTask(ItemTask itemTask);
 }

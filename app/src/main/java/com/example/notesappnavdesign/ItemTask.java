@@ -5,16 +5,16 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class ItemList {
-    public ItemList(String listName) {
-        this.listName = listName;
+public class ItemTask {
+    public ItemTask(String taskName) {
+        this.taskName = taskName;
     }
 
     @PrimaryKey(autoGenerate = true)
     public int lid;
 
-    @ColumnInfo(name = "list_Name")
-    private String listName;
+    @ColumnInfo(name = "task_Name")
+    private String taskName;
 
     public int getLid() {
         return lid;
@@ -24,11 +24,11 @@ public class ItemList {
         this.lid = lid;
     }
 
-    public String getListName() {
-        return listName;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setListName(String listName) {
-        this.listName = listName;
+    public void setTaskName(String listName) {
+        this.taskName = taskName;
     }
 }

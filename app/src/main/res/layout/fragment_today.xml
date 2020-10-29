@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.today.TodayFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarOption"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/option_nav_menu" />
+
     <TextView
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"

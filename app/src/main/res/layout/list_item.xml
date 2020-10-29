@@ -14,12 +14,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="List Name"
+            android:text="@string/name_task"
             android:textSize="20sp"
             android:maxLines="1"
             android:layout_toEndOf="@id/sampleListIcon"
             android:ellipsize="end"
-            android:layout_marginStart="4dp"/>
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="10dp"/>
 
         <ImageView
             android:id="@+id/sampleListIcon"

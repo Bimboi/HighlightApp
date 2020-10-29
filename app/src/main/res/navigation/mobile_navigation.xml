@@ -3,13 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_lists">
-
-    <fragment
-        android:id="@+id/navigation_lists"
-        android:name="com.example.notesappnavdesign.ui.lists.ListsFragment"
-        android:label="@string/title_lists"
-        tools:layout="@layout/fragment_lists" />
+    app:startDestination="@id/navigation_tasks">
 
     <fragment
         android:id="@+id/navigation_today"
@@ -31,5 +25,10 @@
         android:id="@+id/navigation_overdue"
         android:name="com.example.notesappnavdesign.ui.overdue.OverdueFragment"
         android:label="@string/title_overdue"
-        tools:layout="@layout/fragment_overdue"/>
+        tools:layout="@layout/fragment_overdue" />
+    <fragment
+        android:id="@+id/navigation_tasks"
+        android:name="com.example.notesappnavdesign.ui.tasks.TasksFragment"
+        android:label="@string/title_tasks"
+        tools:layout="@layout/fragment_tasks" />
 </navigation>

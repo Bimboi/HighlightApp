@@ -8,65 +8,66 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class Repository {
-    private ListDao listDao;
-    private ListDatabase database;
-    private LiveData<List<ItemList>> allList;
+    private TaskDao taskDao;
+    private TasksDatabase database;
+    private LiveData<List<ItemTask>> allTask;
 
     public Repository(Application application){
-        database = ListDatabase.getInstance(application);
-        listDao = database.getListDao();
-        allList = listDao.getAllList();
+        database = TasksDatabase.getInstance(application);
+        taskDao = database.getTaskDao();
+        allTask = taskDao.getAllTask();
     }
 
-    public void insertList(ItemList itemList){
-        new InsertItemListAsync(listDao).execute(itemList);
+    public void insertList(ItemTask itemTask){
+        new InsertItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public void updateList(ItemList itemList){
-        new UpdateItemListAsync(listDao).execute(itemList);
+    public void updateList(ItemTask itemTask){
+        new UpdateItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public void deleteList(ItemList itemList){
-        new DeleteItemListAsync(listDao).execute(itemList);
+    public void deleteList(ItemTask itemTask){
+        new DeleteItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public LiveData<List<ItemList>> getAllList(){
-        return allList;
+    public LiveData<List<ItemTask>> getAllTask(){
+        return allTask;
     }
-    private static class InsertItemListAsync extends AsyncTask<ItemList, Void, Void>{
-        private ListDao listDao;
 
-        private InsertItemListAsync(ListDao listDao){
-            this.listDao = listDao;
+    private static class InsertItemTaskAsync extends AsyncTask<ItemTask, Void, Void>{
+        private TaskDao taskDao;
+
+        private InsertItemTaskAsync(TaskDao taskDao){
+            this.taskDao = taskDao;
         }
         @Override
-        protected Void doInBackground(ItemList... itemList) {
-            listDao.insertList(itemList[0]);
+        protected Void doInBackground(ItemTask... itemTask) {
+            taskDao.insertTask(itemTask[0]);
             return null;
         }
     }
-    private static class UpdateItemListAsync extends AsyncTask<ItemList, Void, Void>{
-        private ListDao listDao;
+    private static class UpdateItemTaskAsync extends AsyncTask<ItemTask, Void, Void>{
+        private TaskDao taskDao;
 
-        private UpdateItemListAsync(ListDao listDao){
-            this.listDao = listDao;
+        private UpdateItemTaskAsync(TaskDao taskDao){
+            this.taskDao = taskDao;
         }
         @Override
-        protected Void doInBackground(ItemList... itemList) {
-            listDao.updateList(itemList[0]);
+        protected Void doInBackground(ItemTask... itemTask) {
+            taskDao.updateTask(itemTask[0]);
             return null;
         }
     }
-    private static class DeleteItemListAsync extends AsyncTask<ItemList, Void, Void> {
-        private ListDao listDao;
+    private static class DeleteItemTaskAsync extends AsyncTask<ItemTask, Void, Void> {
+        private TaskDao taskDao;
 
-        private DeleteItemListAsync(ListDao listDao) {
-            this.listDao = listDao;
+        private DeleteItemTaskAsync(TaskDao taskDao) {
+            this.taskDao = taskDao;
         }
 
         @Override
-        protected Void doInBackground(ItemList... itemList) {
-            listDao.deleteList(itemList[0]);
+        protected Void doInBackground(ItemTask... itemTask) {
+            taskDao.deleteTask(itemTask[0]);
             return null;
         }
     }
