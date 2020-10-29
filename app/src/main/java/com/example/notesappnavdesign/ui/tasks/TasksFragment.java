@@ -53,6 +53,8 @@ public class TasksFragment extends Fragment {
         });
         toolbar = root.findViewById(R.id.toolbarTask);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setHasOptionsMenu(true);
 //        final TextView textView = root.findViewById(R.id.text_home);
 //        listsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override

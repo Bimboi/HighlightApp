@@ -32,6 +32,7 @@ public class TaskDetails extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
