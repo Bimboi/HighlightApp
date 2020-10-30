@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.taskItem.TaskView"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".ui.taskItem.TaskEdit"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -18,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.taskItem.TaskDetails"/>
+        <activity android:name=".ui.taskItem.TaskCreate"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustNothing"/>
     </application>
 
 </manifest>

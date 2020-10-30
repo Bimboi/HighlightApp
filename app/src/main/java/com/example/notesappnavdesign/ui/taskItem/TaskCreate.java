@@ -15,20 +15,23 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.notesappnavdesign.ItemTask;
 import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
-import com.example.notesappnavdesign.ui.tasks.TasksFragment;
 import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
 
-public class TaskDetails extends AppCompatActivity {
+public class TaskCreate extends AppCompatActivity {
+    public static final String EXTRA_NAME
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_NAME";
+    public static final String EXTRA_DESCRIPTION
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DESCRIPTION";
 
     private Toolbar toolbar;
     private Button buttonCreate;
     private EditText editTextName;
-    private TasksViewModel tasksViewModel;
+    private EditText editTextDesc;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_details);
+        setContentView(R.layout.activity_task_create);
 
         toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
@@ -42,7 +45,7 @@ public class TaskDetails extends AppCompatActivity {
 
         buttonCreate = findViewById(R.id.create_btn);
         editTextName = findViewById(R.id.taskName);
-        tasksViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        editTextDesc = findViewById(R.id.taskDesc);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,14 +56,17 @@ public class TaskDetails extends AppCompatActivity {
 
     private void addTask() {
         String taskName = editTextName.getText().toString();
+        String taskDesc = editTextDesc.getText().toString();
 
         if (taskName.trim().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please add name for new list", Toast.LENGTH_LONG).show();
         } else {
-            ItemTask itemTask = new ItemTask(taskName);
-            tasksViewModel.insertTask(itemTask);
-            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MainActivity.class));
+            Intent data = new Intent();
+            data.putExtra(EXTRA_NAME,taskName);
+            data.putExtra(EXTRA_DESCRIPTION, taskDesc);
+
+            setResult(RESULT_OK,data);
+            finish();
         }
     }
 }

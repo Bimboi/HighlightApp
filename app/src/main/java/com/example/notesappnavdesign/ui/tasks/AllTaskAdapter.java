@@ -23,7 +23,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     @Override
     public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewItem = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.task_item, parent, false);
         return new TaskHolder(viewItem);
     }
 
@@ -39,15 +39,15 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         return allItemTask.size();
     }
 
-    public void setAllItemTask(List<ItemTask> allItemTask){
+    public void setAllItemTask(List<ItemTask> allItemTask) {
         this.allItemTask = allItemTask;
         notifyDataSetChanged();
     }
 
-    class TaskHolder extends RecyclerView.ViewHolder{
+    class TaskHolder extends RecyclerView.ViewHolder {
         private TextView textViewItemListName;
 
-        public TaskHolder(final View itemView){
+        public TaskHolder(final View itemView) {
             super(itemView);
             textViewItemListName = itemView.findViewById(R.id.itemListName);
 
@@ -55,7 +55,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    if(listener != null && position != RecyclerView.NO_POSITION) {
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(allItemTask.get(position));
                     }
                 }
@@ -63,11 +63,12 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         }
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(ItemTask itemTask);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
 }

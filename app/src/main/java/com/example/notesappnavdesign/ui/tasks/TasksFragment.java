@@ -1,15 +1,21 @@
 package com.example.notesappnavdesign.ui.tasks;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -19,14 +25,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
-import com.example.notesappnavdesign.ui.taskItem.TaskDetails;
+import com.example.notesappnavdesign.ui.taskItem.TaskCreate;
+import com.example.notesappnavdesign.ui.taskItem.TaskEdit;
+import com.example.notesappnavdesign.ui.taskItem.TaskView;
 
 import java.util.List;
-import java.util.Objects;
 
 public class TasksFragment extends Fragment {
+    public static final int CREATE_TASK_REQUEST = 1;
+//    public static final int EDIT_TASK_REQUEST = 2;
 
     private TasksViewModel tasksViewModel;
     private RecyclerView recyclerView;
@@ -55,6 +63,23 @@ public class TasksFragment extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+
+        adapterTask.setOnItemClickListener(new AllTaskAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ItemTask itemTask) {
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("My prefs", Context.MODE_PRIVATE).edit();
+                editor.putInt("Task ID", itemTask.gettId());
+                editor.putString("Task Name", itemTask.getTaskName());
+                editor.putString("Task Description", itemTask.getTaskDesc());
+                editor.apply();
+//                Intent intent = new Intent(getActivity(), TaskView.class);
+//                intent.putExtra("Task ID", itemTask.gettId());
+//                intent.putExtra("Task Name", itemTask.getTaskName());
+//                intent.putExtra("Task Description", itemTask.getTaskDesc());
+                startActivity(new Intent(getActivity(),TaskView.class));
+            }
+        });
+
 //        final TextView textView = root.findViewById(R.id.text_home);
 //        listsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
@@ -64,9 +89,14 @@ public class TasksFragment extends Fragment {
 //        });
         return root;
     }
+
+    public void createTask() {
+        startActivityForResult(new Intent(getActivity(), TaskCreate.class), CREATE_TASK_REQUEST);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.top_nav_menu, menu);
+        menuInflater.inflate(R.menu.create_nav_menu, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
@@ -74,8 +104,21 @@ public class TasksFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_add:
-                startActivity(new Intent(getActivity(), TaskDetails.class));
+                createTask();
         }
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREATE_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
+            String taskName = data.getStringExtra(TaskCreate.EXTRA_NAME);
+            String description = data.getStringExtra(TaskCreate.EXTRA_DESCRIPTION);
+
+            ItemTask itemTask = new ItemTask(taskName, description);
+            tasksViewModel.insertTask(itemTask);
+            Toast.makeText(getActivity(), "Successfully created new task", Toast.LENGTH_LONG).show();
+        }
     }
 }

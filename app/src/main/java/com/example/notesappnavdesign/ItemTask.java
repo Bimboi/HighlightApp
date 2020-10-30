@@ -6,22 +6,26 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class ItemTask {
-    public ItemTask(String taskName) {
+    public ItemTask(String taskName, String taskDesc) {
         this.taskName = taskName;
+        this.taskDesc = taskDesc;
     }
 
     @PrimaryKey(autoGenerate = true)
-    public int lid;
+    public int tId;
 
     @ColumnInfo(name = "task_Name")
     private String taskName;
 
-    public int getLid() {
-        return lid;
+    @ColumnInfo(name = "task_Desc")
+    private String taskDesc;
+
+    public int gettId() {
+        return tId;
     }
 
-    public void setLid(int uid) {
-        this.lid = lid;
+    public void settId(int tId) {
+        this.tId = tId;
     }
 
     public String getTaskName() {
@@ -30,5 +34,13 @@ public class ItemTask {
 
     public void setTaskName(String listName) {
         this.taskName = taskName;
+    }
+
+    public String getTaskDesc() {
+        return taskDesc;
+    }
+
+    public void setTaskDesc(String taskDesc) {
+        this.taskDesc = taskDesc;
     }
 }

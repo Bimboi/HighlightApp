@@ -31,7 +31,7 @@ public class OverdueFragment extends Fragment {
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.option_nav_menu, menu);
+        menuInflater.inflate(R.menu.edit_nav_menu, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
