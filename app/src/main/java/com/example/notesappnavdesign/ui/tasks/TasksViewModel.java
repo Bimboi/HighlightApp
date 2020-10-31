@@ -27,14 +27,16 @@ public class TasksViewModel extends AndroidViewModel {
     }
 
     public void insertTask(ItemTask itemTask){
-        taskRepository.insertList(itemTask);
+        taskRepository.insertTask(itemTask);
     }
 
     public void updateTask(ItemTask itemTask){
-        taskRepository.updateList(itemTask);
+        taskRepository.updateTask(itemTask);
     }
 
     public void deleteTask(ItemTask itemTask){
-        taskRepository.deleteList(itemTask);
+        taskRepository.deleteTask(itemTask);
     }
+
+    public void deleteTaskById(Integer id) { taskRepository.deleteTaskById(id); }
 }

@@ -1,6 +1,7 @@
 package com.example.notesappnavdesign;
 
 import android.app.Application;
+import android.content.ClipData;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -18,17 +19,22 @@ public class Repository {
         allTask = taskDao.getAllTask();
     }
 
-    public void insertList(ItemTask itemTask){
+    public void insertTask(ItemTask itemTask){
         new InsertItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public void updateList(ItemTask itemTask){
+    public void updateTask(ItemTask itemTask){
         new UpdateItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public void deleteList(ItemTask itemTask){
+    public void deleteTask(ItemTask itemTask){
         new DeleteItemTaskAsync(taskDao).execute(itemTask);
     }
+
+    public void deleteTaskById(Integer id){
+        new DeleteItemTaskByIdAsync(taskDao).execute(id);
+    }
+
 
     public LiveData<List<ItemTask>> getAllTask(){
         return allTask;
@@ -71,4 +77,19 @@ public class Repository {
             return null;
         }
     }
+
+    private static class DeleteItemTaskByIdAsync extends AsyncTask<Integer, Void, Void> {
+        private TaskDao taskDao;
+
+        private DeleteItemTaskByIdAsync(TaskDao taskDao) {
+            this.taskDao = taskDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            taskDao.deleteById(params[0]);
+            return null;
+        }
+    }
+
 }

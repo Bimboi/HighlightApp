@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,12 +32,7 @@ import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
 public class TaskView extends AppCompatActivity {
 
     private TasksViewModel tasksViewModel;
-    private Toolbar toolbar;
-    private TextView textTaskName;
-    private TextView textDescription;
-    private String name;
-    private String desc;
-    private AllTaskAdapter allTaskAdapter;
+    private Integer id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,7 @@ public class TaskView extends AppCompatActivity {
         tasksViewModel =
                 ViewModelProviders.of(this).get(TasksViewModel.class);
 
-        toolbar = findViewById(R.id.toolbarBackHome);
+        Toolbar toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -55,13 +52,25 @@ public class TaskView extends AppCompatActivity {
             }
         });
 
+        Toolbar toolbar2 = findViewById(R.id.toolbarDelete);
+        toolbar2.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.navigation_delete) {
+                    deleteTask();
+                }
+                return false;
+            }
+        });
+
         SharedPreferences preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
 
-        name = preferences.getString("Task Name", "");
-        desc = preferences.getString("Task Description", "");
+        String name = preferences.getString("Task Name", "");
+        String desc = preferences.getString("Task Description", "");
+        id = preferences.getInt("Task ID", 0);
 
-        textTaskName = findViewById(R.id.textName);
-        textDescription = findViewById(R.id.textDescription);
+        TextView textTaskName = findViewById(R.id.textName);
+        TextView textDescription = findViewById(R.id.textDescription);
 
         textTaskName.setText(name);
         textDescription.setText(desc);
@@ -76,7 +85,28 @@ public class TaskView extends AppCompatActivity {
         startActivity(new Intent(this, TaskEdit.class));
     }
 
-    public void deleteTask(){
+    public void deleteTask() {
+        confirmDelete().show();
+    }
+
+    public AlertDialog confirmDelete() {
+        return new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete")
+                .setMessage("You are about to permanently delete this.")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tasksViewModel.deleteTaskById(id);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create();
     }
 
     @Override
@@ -88,12 +118,8 @@ public class TaskView extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_update:
-                updateTask();
-                break;
-            case R.id.navigation_delete:
-                deleteTask();
+        if (item.getItemId() == R.id.navigation_update) {
+            updateTask();
         }
         return false;
     }
