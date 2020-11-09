@@ -16,4 +16,8 @@
     <string name="sort_task">Sort</string>
     <string name="description_title_task">Description</string>
     <string name="description_details_task">Description Details</string>
+    <string name="date_title_task">Date</string>
+    <string name="icon_desc_card">Icon for Task</string>
+    <string name="icon_date">Icon for Date</string>
+    <string name="date_pattern">dd/MM/yyyy</string>
 </resources>

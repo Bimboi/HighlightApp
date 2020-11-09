@@ -36,7 +36,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -53,7 +53,6 @@
                 android:id="@+id/textTitleDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="5dp"
                 android:paddingStart="30dp"
                 android:text="@string/description_title_task"
                 android:textColor="@color/colorBlack"
@@ -67,7 +66,27 @@
                 android:text="@string/description_details_task"
                 android:textColor="@color/colorGrey"
                 android:textSize="15sp" />
-
+            <TextView
+                android:id="@+id/taskDateTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingTop="10dp"
+                android:text="@string/date_title_task"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/date_pattern"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -29,6 +29,10 @@ import com.example.notesappnavdesign.ui.tasks.AllTaskAdapter;
 import com.example.notesappnavdesign.ui.tasks.TasksFragment;
 import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TaskView extends AppCompatActivity {
 
     private TasksViewModel tasksViewModel;
@@ -67,10 +71,24 @@ public class TaskView extends AppCompatActivity {
 
         String name = preferences.getString("Task Name", "");
         String desc = preferences.getString("Task Description", "");
+        String date = preferences.getString("Task Date","");
         id = preferences.getInt("Task ID", 0);
 
         TextView textTaskName = findViewById(R.id.textName);
         TextView textDescription = findViewById(R.id.textDescription);
+        TextView textDate = findViewById(R.id.textDate);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        try {
+            Date d = dateFormat.parse(date);
+            Log.d("New Date: ",d.toString());
+            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
+            String strDate = dateFormat.format(d);
+            textDate.setText(strDate);
+
+        } catch (ParseException e) {
+            Log.d("Date Error: ",e.toString());
+        }
 
         textTaskName.setText(name);
         textDescription.setText(desc);

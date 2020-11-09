@@ -9,28 +9,37 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="14dp">
+
         <TextView
-            android:id="@+id/itemListName"
+            android:id="@+id/itemTaskName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="@string/add_name_task"
-            android:textSize="20sp"
-            android:maxLines="1"
-            android:layout_toEndOf="@id/sampleListIcon"
-            android:ellipsize="end"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginStart="10dp"/>
+            android:layout_toEndOf="@+id/sampleTaskIcon"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/add_name_task"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/itemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemTaskName"
+            android:layout_alignStart="@+id/itemTaskName"
+            android:layout_marginStart="0dp"
+            android:text="@string/date_title_task"
+            android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/sampleListIcon"
-            android:contentDescription="Icon for List"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:srcCompat="@drawable/list_icon"
+            android:id="@+id/sampleTaskIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            />
+            android:contentDescription="@string/icon_desc_card"
+            app:srcCompat="@drawable/ic_assignment" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

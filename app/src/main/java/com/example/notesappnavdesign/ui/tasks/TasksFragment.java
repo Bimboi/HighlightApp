@@ -71,6 +71,7 @@ public class TasksFragment extends Fragment {
                 editor.putInt("Task ID", itemTask.gettId());
                 editor.putString("Task Name", itemTask.getTaskName());
                 editor.putString("Task Description", itemTask.getTaskDesc());
+                editor.putString("Task Date", itemTask.getTaskDate());
                 editor.apply();
 //                Intent intent = new Intent(getActivity(), TaskView.class);
 //                intent.putExtra("Task ID", itemTask.gettId());
@@ -115,8 +116,9 @@ public class TasksFragment extends Fragment {
         if (requestCode == CREATE_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
             String taskName = data.getStringExtra(TaskCreate.EXTRA_NAME);
             String description = data.getStringExtra(TaskCreate.EXTRA_DESCRIPTION);
+            String taskDate = data.getStringExtra(TaskCreate.EXTRA_DATE);
 
-            ItemTask itemTask = new ItemTask(taskName, description);
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate);
             tasksViewModel.insertTask(itemTask);
             Toast.makeText(getActivity(), "Successfully created new task", Toast.LENGTH_LONG).show();
         }

@@ -1,5 +1,6 @@
 package com.example.notesappnavdesign.ui.tasks;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.notesappnavdesign.ItemTask;
 import com.example.notesappnavdesign.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHolder> {
@@ -30,8 +34,19 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     @Override
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
         ItemTask currentItemTask = allItemTask.get(position);
-        holder.textViewItemListName.setText(currentItemTask.getTaskName());
-
+        String strDate = currentItemTask.getTaskDate();
+        Log.d("Date: ",strDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        try {
+            Date d = dateFormat.parse(strDate);
+            Log.d("New Date: ",d.toString());
+            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
+            String date = dateFormat.format(d);
+            holder.textViewItemDate.setText(date);
+        } catch (ParseException e) {
+            Log.d("Date Error: ",e.toString());
+        }
+        holder.textViewItemTaskName.setText(currentItemTask.getTaskName());
     }
 
     @Override
@@ -45,11 +60,13 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     }
 
     class TaskHolder extends RecyclerView.ViewHolder {
-        private TextView textViewItemListName;
+        private TextView textViewItemTaskName;
+        private TextView textViewItemDate;
 
         public TaskHolder(final View itemView) {
             super(itemView);
-            textViewItemListName = itemView.findViewById(R.id.itemListName);
+            textViewItemTaskName = itemView.findViewById(R.id.itemTaskName);
+            textViewItemDate = itemView.findViewById(R.id.itemDate);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
