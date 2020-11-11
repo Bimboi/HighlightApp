@@ -11,12 +11,13 @@ import java.util.List;
 public class Repository {
     private TaskDao taskDao;
     private TasksDatabase database;
-    private LiveData<List<ItemTask>> allTask;
+    private LiveData<List<ItemTask>> allTask, allToday;
 
     public Repository(Application application){
         database = TasksDatabase.getInstance(application);
         taskDao = database.getTaskDao();
         allTask = taskDao.getAllTask();
+        allToday = taskDao.getTodayTask();
     }
 
     public void insertTask(ItemTask itemTask){
@@ -27,17 +28,16 @@ public class Repository {
         new UpdateItemTaskAsync(taskDao).execute(itemTask);
     }
 
-    public void deleteTask(ItemTask itemTask){
-        new DeleteItemTaskAsync(taskDao).execute(itemTask);
-    }
-
     public void deleteTaskById(Integer id){
         new DeleteItemTaskByIdAsync(taskDao).execute(id);
     }
 
-
     public LiveData<List<ItemTask>> getAllTask(){
         return allTask;
+    }
+
+    public LiveData<List<ItemTask>> getAllToday(){
+        return allToday;
     }
 
     private static class InsertItemTaskAsync extends AsyncTask<ItemTask, Void, Void>{
@@ -61,19 +61,6 @@ public class Repository {
         @Override
         protected Void doInBackground(ItemTask... itemTask) {
             taskDao.updateTask(itemTask[0]);
-            return null;
-        }
-    }
-    private static class DeleteItemTaskAsync extends AsyncTask<ItemTask, Void, Void> {
-        private TaskDao taskDao;
-
-        private DeleteItemTaskAsync(TaskDao taskDao) {
-            this.taskDao = taskDao;
-        }
-
-        @Override
-        protected Void doInBackground(ItemTask... itemTask) {
-            taskDao.deleteTask(itemTask[0]);
             return null;
         }
     }

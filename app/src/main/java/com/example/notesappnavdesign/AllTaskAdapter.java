@@ -1,4 +1,4 @@
-package com.example.notesappnavdesign.ui.tasks;
+package com.example.notesappnavdesign;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.R;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHolder> {
     private List<ItemTask> allItemTask = new ArrayList<>();
@@ -36,7 +34,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         ItemTask currentItemTask = allItemTask.get(position);
         String strDate = currentItemTask.getTaskDate();
         Log.d("Date: ",strDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             Date d = dateFormat.parse(strDate);
             Log.d("New Date: ",d.toString());

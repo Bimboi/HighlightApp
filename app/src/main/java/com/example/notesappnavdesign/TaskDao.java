@@ -17,12 +17,13 @@ public interface TaskDao {
     @Query("DELETE FROM itemtask WHERE tId=:id")
     void deleteById(int id);
 
+    @Query("Select * FROM ItemTask WHERE task_Date=strftime('%d-%m-%Y','now')")
+    LiveData<List<ItemTask>> getTodayTask();
+
     @Insert
     void insertTask(ItemTask itemTask);
 
     @Update
     void updateTask(ItemTask itemTask);
 
-    @Delete
-    void deleteTask(ItemTask itemTask);
 }

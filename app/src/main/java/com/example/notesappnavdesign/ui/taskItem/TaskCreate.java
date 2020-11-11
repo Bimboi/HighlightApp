@@ -3,6 +3,7 @@ package com.example.notesappnavdesign.ui.taskItem;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,13 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
-import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -76,9 +72,7 @@ public class TaskCreate extends AppCompatActivity{
         String taskDesc = editTextDesc.getText().toString();
         String taskDate = dateText.getText().toString();
 
-        if (taskName.trim().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please add name for new list", Toast.LENGTH_LONG).show();
-        } else {
+        if (!taskName.trim().isEmpty() && !taskDate.equals("dd-mm-yyyy")) {
             Intent data = new Intent();
             data.putExtra(EXTRA_NAME,taskName);
             data.putExtra(EXTRA_DESCRIPTION, taskDesc);
@@ -86,6 +80,8 @@ public class TaskCreate extends AppCompatActivity{
 
             setResult(RESULT_OK,data);
             finish();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please add name and date", Toast.LENGTH_LONG).show();
         }
     }
     private void showDatePickerDialog(){
@@ -95,7 +91,9 @@ public class TaskCreate extends AppCompatActivity{
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        dateText.setText(day+"/"+month+"/"+year);
+                        month++;
+                        Log.d("Date Calendar: ", new Date()+"");
+                        dateText.setText(day+"-"+month+"-"+year);
                     }
                 },
                 Calendar.getInstance().get(Calendar.YEAR),

@@ -19,5 +19,7 @@
     <string name="date_title_task">Date</string>
     <string name="icon_desc_card">Icon for Task</string>
     <string name="icon_date">Icon for Date</string>
-    <string name="date_pattern">dd/MM/yyyy</string>
+    <string name="date_pattern">dd-mm-yyyy</string>
+    <string name="today_message">No task for today...</string>
+    <string name="today_no_task_description">When no task</string>
 </resources>

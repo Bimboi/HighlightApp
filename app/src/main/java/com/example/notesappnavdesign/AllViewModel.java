@@ -1,4 +1,4 @@
-package com.example.notesappnavdesign.ui.tasks;
+package com.example.notesappnavdesign;
 
 import android.app.Application;
 
@@ -6,24 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.Repository;
-
 import java.util.List;
 
-public class TasksViewModel extends AndroidViewModel {
+public class AllViewModel extends AndroidViewModel {
 
     Repository taskRepository;
-    LiveData<List<ItemTask>> allList;
+    LiveData<List<ItemTask>> allTask, allToday;
 
-    public TasksViewModel(@NonNull Application application) {
+    public AllViewModel(@NonNull Application application) {
         super(application);
         taskRepository = new Repository(application);
-        allList = taskRepository.getAllTask();
+        allTask = taskRepository.getAllTask();
+        allToday = taskRepository.getAllToday();
     }
 
     public LiveData<List<ItemTask>> getAllTask(){
         return taskRepository.getAllTask();
+    }
+
+    public LiveData<List<ItemTask>> getAllToday(){
+        return taskRepository.getAllToday();
     }
 
     public void insertTask(ItemTask itemTask){
@@ -32,10 +34,6 @@ public class TasksViewModel extends AndroidViewModel {
 
     public void updateTask(ItemTask itemTask){
         taskRepository.updateTask(itemTask);
-    }
-
-    public void deleteTask(ItemTask itemTask){
-        taskRepository.deleteTask(itemTask);
     }
 
     public void deleteTaskById(Integer id) { taskRepository.deleteTaskById(id); }

@@ -10,6 +10,7 @@
         android:id="@+id/appBarUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
@@ -23,13 +24,24 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="?attr/homeAsUpIndicator" />
 
+        <TextView
+            android:id="@+id/textUpdateTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingStart="20dp"
+            android:background="?android:windowBackground"
+            android:text="@string/name_text"
+            android:textColor="#000000"
+            android:textSize="25sp" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollViewUpdate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginVertical="56dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginBottom="56dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/appBarUpdate">
 
@@ -37,16 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textUpdateTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="10dp"
-                android:paddingStart="20dp"
-                android:text="@string/name_text"
-                android:textColor="#000000"
-                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/taskNameTitle"
@@ -63,8 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:hint="@string/add_name_task"
-                android:maxLines="1"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/taskDescTitle"
@@ -82,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:hint="@string/add_description_task"
-                android:inputType="text"/>
+                android:inputType="text" />
+
             <TextView
                 android:id="@+id/taskDateTitle"
                 android:layout_width="match_parent"
@@ -92,29 +95,32 @@
                 android:text="@string/date_title_task"
                 android:textColor="#000000"
                 android:textSize="15sp" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/dateTextEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="35dp"
                     android:layout_marginTop="30dp"
                     android:text="@string/date_pattern"
-                    android:textSize="15sp"
-                    android:layout_centerVertical="true"/>
+                    android:textSize="15sp" />
+
                 <ImageView
                     android:id="@+id/date_edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_toEndOf="@id/dateTextEdit"
-                    android:layout_centerVertical="true"
+                    android:backgroundTint="?android:windowBackground"
                     android:contentDescription="@string/icon_date"
-                    android:src="@drawable/ic_calendar"
-                    android:backgroundTint="?android:windowBackground" />
+                    android:src="@drawable/ic_calendar" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
@@ -125,7 +131,7 @@
         android:layout_height="?actionBarSize"
         android:text="@string/update_task"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

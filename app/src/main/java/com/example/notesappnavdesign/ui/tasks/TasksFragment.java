@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,42 +23,41 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notesappnavdesign.AllTaskAdapter;
 import com.example.notesappnavdesign.ItemTask;
 import com.example.notesappnavdesign.R;
+import com.example.notesappnavdesign.AllViewModel;
 import com.example.notesappnavdesign.ui.taskItem.TaskCreate;
-import com.example.notesappnavdesign.ui.taskItem.TaskEdit;
 import com.example.notesappnavdesign.ui.taskItem.TaskView;
 
 import java.util.List;
 
 public class TasksFragment extends Fragment {
     public static final int CREATE_TASK_REQUEST = 1;
-//    public static final int EDIT_TASK_REQUEST = 2;
 
-    private TasksViewModel tasksViewModel;
-    private RecyclerView recyclerView;
-    private Toolbar toolbar;
+    private AllViewModel allViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        tasksViewModel =
-                ViewModelProviders.of(this).get(TasksViewModel.class);
+        allViewModel =
+                ViewModelProviders.of(this).get(AllViewModel.class);
         View root = inflater.inflate(R.layout.fragment_tasks, container, false);
 
-        recyclerView = root.findViewById(R.id.tasksRecyclerView);
+        RecyclerView recyclerView = root.findViewById(R.id.tasksRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         final AllTaskAdapter adapterTask = new AllTaskAdapter();
         recyclerView.setAdapter(adapterTask);
 
-        tasksViewModel.getAllTask().observe(getViewLifecycleOwner(), new Observer<List<ItemTask>>() {
+        allViewModel.getAllTask().observe(getViewLifecycleOwner(), new Observer<List<ItemTask>>() {
             @Override
             public void onChanged(List<ItemTask> itemTasks) {
                 adapterTask.setAllItemTask(itemTasks);
             }
         });
-        toolbar = root.findViewById(R.id.toolbarTask);
+
+        Toolbar toolbar = root.findViewById(R.id.toolbarTask);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
@@ -73,21 +71,9 @@ public class TasksFragment extends Fragment {
                 editor.putString("Task Description", itemTask.getTaskDesc());
                 editor.putString("Task Date", itemTask.getTaskDate());
                 editor.apply();
-//                Intent intent = new Intent(getActivity(), TaskView.class);
-//                intent.putExtra("Task ID", itemTask.gettId());
-//                intent.putExtra("Task Name", itemTask.getTaskName());
-//                intent.putExtra("Task Description", itemTask.getTaskDesc());
-                startActivity(new Intent(getActivity(),TaskView.class));
+                startActivity(new Intent(getActivity(), TaskView.class));
             }
         });
-
-//        final TextView textView = root.findViewById(R.id.text_home);
-//        listsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
         return root;
     }
 
@@ -119,7 +105,7 @@ public class TasksFragment extends Fragment {
             String taskDate = data.getStringExtra(TaskCreate.EXTRA_DATE);
 
             ItemTask itemTask = new ItemTask(taskName, description, taskDate);
-            tasksViewModel.insertTask(itemTask);
+            allViewModel.insertTask(itemTask);
             Toast.makeText(getActivity(), "Successfully created new task", Toast.LENGTH_LONG).show();
         }
     }

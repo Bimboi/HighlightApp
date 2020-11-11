@@ -4,15 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,19 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
-import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
+import com.example.notesappnavdesign.AllViewModel;
 
 import java.util.Calendar;
 
 public class TaskEdit extends AppCompatActivity {
-//    public static final String EXTRA_ID_EDIT
-//            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_ID_EDIT";
-//    public static final String EXTRA_NAME_EDIT
-//            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_NAME_EDIT";
-//    public static final String EXTRA_DESCRIPTION_EDIT
-//            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DESCRIPTION_EDIT";
+    public static final String EXTRA_NAME_EDIT
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_NAME";
+    public static final String EXTRA_DESCRIPTION_EDIT
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DESCRIPTION";
+    public static final String EXTRA_DATE_EDIT
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DATE";
 
     private Toolbar toolbar;
     private TextView textViewName;
@@ -66,12 +61,13 @@ public class TaskEdit extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
 
-        String name = preferences.getString("Task Name", "");
+        String name = getIntent().getStringExtra("name");
 
+        Log.d("name extra: ",name);
         textViewName.setText(name);
         editTextName.setText(name);
-        editTextDesc.setText(preferences.getString("Task Description", ""));
-        taskDateEdit.setText(preferences.getString("Task Date", ""));
+        editTextDesc.setText(getIntent().getStringExtra("desc"));
+        taskDateEdit.setText(getIntent().getStringExtra("date"));
 
         id = preferences.getInt("Task ID", 0);
 
@@ -96,20 +92,23 @@ public class TaskEdit extends AppCompatActivity {
         String taskName = editTextName.getText().toString();
         String taskDesc = editTextDesc.getText().toString();
         String taskDate = taskDateEdit.getText().toString();
-        TasksViewModel tasksViewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
 
-        if (taskName.trim().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please provide a name", Toast.LENGTH_LONG).show();
+        if (!taskName.trim().isEmpty() && !taskDate.equals("dd-mm-yyyy")) {
+            Intent data = new Intent();
+            data.putExtra(EXTRA_NAME_EDIT,taskName);
+            data.putExtra(EXTRA_DESCRIPTION_EDIT, taskDesc);
+            data.putExtra(EXTRA_DATE_EDIT, taskDate);
+
+//            SharedPreferences.Editor editor = getSharedPreferences("My prefs", MODE_PRIVATE).edit();
+//            editor.putString("Task Name", taskName);
+//            editor.putString("Task Description", taskDesc);
+//            editor.putString("Task Date", taskDate);
+//            editor.apply();
+
+            setResult(RESULT_OK,data);
+            finish();
         } else {
-            ItemTask itemTask = new ItemTask(taskName, taskDesc, taskDate);
-            itemTask.settId(id);
-            tasksViewModel.updateTask(itemTask);
-            SharedPreferences.Editor editor = getSharedPreferences("My prefs", MODE_PRIVATE).edit();
-            editor.putString("Task Name", taskName);
-            editor.putString("Task Description", taskDesc);
-            editor.putString("Task Date", taskDate);
-            editor.apply();
-            startActivity(new Intent(this, TaskView.class));
+            Toast.makeText(getApplicationContext(), "Please provide a name and date", Toast.LENGTH_LONG).show();
         }
     }
     private void showDatePickerDialog(){
@@ -120,7 +119,7 @@ public class TaskEdit extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Calendar.getInstance().set(year,month,day);
-                        taskDateEdit.setText(day+"/"+month+"/"+year);
+                        taskDateEdit.setText(day+"-"+month+"-"+year);
                     }
                 },
                 Calendar.getInstance().get(Calendar.YEAR),

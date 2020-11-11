@@ -6,26 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".ui.today.TodayFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarOption"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/edit_nav_menu" />
-
-    <TextView
-        android:id="@+id/text_dashboard"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarToday"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?android:windowBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_nav_menu" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/todayRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarToday"
+        tools:listitem="@layout/task_item" />
+
+    <ImageView
+        android:id="@+id/noTaskToday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_today"
+        android:contentDescription="@string/today_no_task_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarToday"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/noTaskText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/today_message"
+        app:layout_constraintTop_toBottomOf="@id/noTaskToday"
+        app:layout_constraintRight_toRightOf="@id/noTaskToday"
+        app:layout_constraintLeft_toLeftOf="@id/noTaskToday"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

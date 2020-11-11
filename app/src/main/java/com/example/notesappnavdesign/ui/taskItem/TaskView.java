@@ -1,10 +1,10 @@
 package com.example.notesappnavdesign.ui.taskItem;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -24,27 +24,31 @@ import android.widget.Toast;
 import com.example.notesappnavdesign.ItemTask;
 import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
-import com.example.notesappnavdesign.TasksDatabase;
-import com.example.notesappnavdesign.ui.tasks.AllTaskAdapter;
+import com.example.notesappnavdesign.AllViewModel;
 import com.example.notesappnavdesign.ui.tasks.TasksFragment;
-import com.example.notesappnavdesign.ui.tasks.TasksViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TaskView extends AppCompatActivity {
+    public static final int EDIT_TASK_REQUEST = 2;
 
-    private TasksViewModel tasksViewModel;
+    private AllViewModel allViewModel;
+    private SharedPreferences preferences;
+    private String name, desc, date;
     private Integer id;
+    private TextView textTaskName, textDescription, textDate;
+    private SimpleDateFormat dateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_view);
 
-        tasksViewModel =
-                ViewModelProviders.of(this).get(TasksViewModel.class);
+        allViewModel =
+                ViewModelProviders.of(this).get(AllViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
@@ -67,27 +71,27 @@ public class TaskView extends AppCompatActivity {
             }
         });
 
-        SharedPreferences preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
+        preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
 
-        String name = preferences.getString("Task Name", "");
-        String desc = preferences.getString("Task Description", "");
-        String date = preferences.getString("Task Date","");
+        name = preferences.getString("Task Name", "");
+        desc = preferences.getString("Task Description", "");
+        date = preferences.getString("Task Date", "");
         id = preferences.getInt("Task ID", 0);
 
-        TextView textTaskName = findViewById(R.id.textName);
-        TextView textDescription = findViewById(R.id.textDescription);
-        TextView textDate = findViewById(R.id.textDate);
+        textTaskName = findViewById(R.id.textName);
+        textDescription = findViewById(R.id.textDescription);
+        textDate = findViewById(R.id.textDate);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             Date d = dateFormat.parse(date);
-            Log.d("New Date: ",d.toString());
+            Log.d("New Date: ", d.toString());
             dateFormat.applyPattern("EEEE, MMM dd, yyyy");
             String strDate = dateFormat.format(d);
             textDate.setText(strDate);
 
         } catch (ParseException e) {
-            Log.d("Date Error: ",e.toString());
+            Log.d("Date Error: ", e.toString());
         }
 
         textTaskName.setText(name);
@@ -96,11 +100,11 @@ public class TaskView extends AppCompatActivity {
     }
 
     public void updateTask() {
-//        Intent intent = new Intent(this, TaskEdit.class);
-//        intent.putExtra("Task ID", getIntent().getExtras().getInt("Task ID"));
-//        intent.putExtra("Task Name", name);
-//        intent.putExtra("Task Description", desc);
-        startActivity(new Intent(this, TaskEdit.class));
+        Intent i = new Intent(getApplicationContext(), TaskCreate.class);
+        i.putExtra("name",name);
+        i.putExtra("desc", desc);
+        i.putExtra("date", date);
+        startActivityForResult(i, EDIT_TASK_REQUEST);
     }
 
     public void deleteTask() {
@@ -114,7 +118,7 @@ public class TaskView extends AppCompatActivity {
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tasksViewModel.deleteTaskById(id);
+                        allViewModel.deleteTaskById(id);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         dialogInterface.dismiss();
                     }
@@ -143,7 +147,33 @@ public class TaskView extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, MainActivity.class));
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
+            String taskName = data.getStringExtra(TaskEdit.EXTRA_NAME_EDIT);
+            String description = data.getStringExtra(TaskEdit.EXTRA_DESCRIPTION_EDIT);
+            String taskDate = data.getStringExtra(TaskEdit.EXTRA_DATE_EDIT);
+
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate);
+            itemTask.settId(id);
+            allViewModel.updateTask(itemTask);
+
+            dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            try {
+                Date d = dateFormat.parse(taskDate);
+                Log.d("New Date EditResult: ", d.toString());
+                dateFormat.applyPattern("EEEE, MMM dd, yyyy");
+                String strDate = dateFormat.format(d);
+                textDate.setText(strDate);
+
+            } catch (ParseException e) {
+                Log.d("Date Error EditResult: ", e.toString());
+            }
+
+            textTaskName.setText(taskName);
+            textDescription.setText(description);
+
+            Toast.makeText(getApplicationContext(), "Successfully updated task", Toast.LENGTH_LONG).show();
+        }
     }
 }
