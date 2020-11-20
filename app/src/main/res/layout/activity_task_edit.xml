@@ -22,17 +22,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:menu="@menu/save_nav_menu"
             app:navigationIcon="?attr/homeAsUpIndicator" />
 
         <TextView
             android:id="@+id/textUpdateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:paddingStart="20dp"
             android:background="?android:windowBackground"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:text="@string/name_text"
-            android:textColor="#000000"
+            android:ellipsize="end"
+            android:textColor="@color/colorBlack"
             android:textSize="25sp" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="112dp"
-        android:layout_marginBottom="56dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/appBarUpdate">
 
@@ -54,28 +55,82 @@
                 android:id="@+id/taskNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="30dp"
+                android:layout_marginStart="30dp"
                 android:text="@string/name_text"
-                android:textColor="#000000"
+                android:textColor="@color/colorGrey"
                 android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/taskNameUpdate"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/taskNameUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@id/important_status_edit"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <ImageView
+                    android:id="@+id/important_status_edit"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="40dp"
+                    android:src="@drawable/ic_important_notflag" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/taskDateTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:hint="@string/add_name_task"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:layout_marginStart="30dp"
+                android:paddingTop="10dp"
+                android:text="@string/date_title_task"
+                android:textColor="@color/colorGrey"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/dateTextEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@id/date_edit_btn"
+                    android:textColor="@color/colorBlack"
+                    android:backgroundTint="@color/colorBlack"
+                    android:enabled="false" />
+
+                <ImageView
+                    android:id="@+id/date_edit_btn"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="40dp"
+                    android:contentDescription="@string/icon_date"
+                    android:src="@drawable/ic_calendar" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/taskDescTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="30dp"
+                android:layout_marginStart="30dp"
                 android:paddingTop="10dp"
                 android:text="@string/description_text"
-                android:textColor="#000000"
+                android:textColor="@color/colorGrey"
                 android:textSize="15sp" />
 
             <EditText
@@ -83,55 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
-                android:hint="@string/add_description_task"
-                android:inputType="text" />
+                android:inputType="textMultiLine" />
 
-            <TextView
-                android:id="@+id/taskDateTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="30dp"
-                android:paddingTop="10dp"
-                android:text="@string/date_title_task"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/dateTextEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/date_pattern"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/date_edit_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@id/dateTextEdit"
-                    android:backgroundTint="?android:windowBackground"
-                    android:contentDescription="@string/icon_date"
-                    android:src="@drawable/ic_calendar" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/save_btn"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:text="@string/update_task"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

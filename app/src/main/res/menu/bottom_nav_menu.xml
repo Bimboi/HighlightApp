@@ -2,28 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_tasks"
-        android:icon="@drawable/list_icon"
-        android:title="@string/title_tasks" />
-
-    <item
         android:id="@+id/navigation_today"
         android:icon="@drawable/today_icon"
         android:title="@string/title_today" />
-
-    <item
-        android:id="@+id/navigation_schedules"
-        android:icon="@drawable/scheduled_icon"
-        android:title="@string/title_schedule" />
-
     <item
         android:id="@+id/navigation_important"
         android:icon="@drawable/important_icon"
         android:title="@string/title_important" />
-
     <item
         android:id="@+id/navigation_overdue"
         android:icon="@drawable/overdue_icon"
         android:title="@string/title_overdue" />
-
+    <item
+        android:id="@+id/navigation_tasks"
+        android:icon="@drawable/ic_tasks"
+        android:title="@string/title_tasks" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_schedules"-->
+<!--        android:icon="@drawable/scheduled_icon"-->
+<!--        android:title="@string/title_schedule" />-->
 </menu>

@@ -30,12 +30,9 @@ import java.util.List;
 
 public class TodayFragment extends Fragment {
 
-    private AllViewModel allViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        allViewModel =
-                ViewModelProviders.of(this).get(AllViewModel.class);
+        AllViewModel allViewModel = ViewModelProviders.of(this).get(AllViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_today, container, false);
 
         final RecyclerView recyclerView = root.findViewById(R.id.todayRecyclerView);
@@ -51,7 +48,7 @@ public class TodayFragment extends Fragment {
                 adapterTask.setAllItemTask(itemTasks);
                 if(recyclerView.getLayoutManager().getItemCount() == 0){
                     root.findViewById(R.id.noTaskToday).setVisibility(View.VISIBLE);
-                    root.findViewById(R.id.noTaskText).setVisibility(View.VISIBLE);
+                    root.findViewById(R.id.noTaskTodayText).setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -69,6 +66,7 @@ public class TodayFragment extends Fragment {
                 editor.putString("Task Name", itemTask.getTaskName());
                 editor.putString("Task Description", itemTask.getTaskDesc());
                 editor.putString("Task Date", itemTask.getTaskDate());
+                editor.putInt("Task Importance", itemTask.getTaskImportance());
                 editor.apply();
                 startActivity(new Intent(getActivity(), TaskView.class));
             }

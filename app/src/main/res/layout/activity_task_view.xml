@@ -10,14 +10,14 @@
         android:id="@+id/appBarEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:elevation="0dp">
+        android:background="?android:windowBackground">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarBackHome"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?android:windowBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -25,74 +25,75 @@
             app:menu="@menu/edit_nav_menu"
             app:navigationIcon="?attr/homeAsUpIndicator" />
 
-        <TextView
-            android:id="@+id/textName"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:paddingStart="20dp"
-            android:background="?android:windowBackground"
-            android:text="@string/add_name_task"
-            android:textColor="@color/colorBlack"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:ellipsize="end"
+                android:text="@string/add_name_task"
+                android:textColor="@color/colorBlack"
+                android:textSize="25sp"/>
 
+        </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_marginTop="112dp"
         android:layout_marginBottom="56dp"
-        android:layout_marginTop="112dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textTitleDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="30dp"
-                android:text="@string/description_title_task"
-                android:textColor="@color/colorBlack"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/textDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="30dp"
-                android:text="@string/description_details_task"
-                android:textColor="@color/colorGrey"
-                android:textSize="15sp" />
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/taskDateTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="30dp"
-                android:paddingTop="10dp"
                 android:text="@string/date_title_task"
-                android:textColor="#000000"
+                android:textColor="@color/colorGrey"
                 android:textSize="15sp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="30dp"
+                android:text="@string/date_pattern"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/textDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="30dp"
-                    android:text="@string/date_pattern"
-                    android:textSize="15sp" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/textTitleDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingTop="10dp"
+                android:text="@string/description_title_task"
+                android:textColor="@color/colorGrey"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="@string/description_details_task"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp" />
         </LinearLayout>
     </ScrollView>
 

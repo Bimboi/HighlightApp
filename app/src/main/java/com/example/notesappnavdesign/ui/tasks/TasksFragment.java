@@ -41,9 +41,9 @@ public class TasksFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         allViewModel =
                 ViewModelProviders.of(this).get(AllViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tasks, container, false);
+        final View root = inflater.inflate(R.layout.fragment_tasks, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.tasksRecyclerView);
+        final RecyclerView recyclerView = root.findViewById(R.id.tasksRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -54,6 +54,10 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChanged(List<ItemTask> itemTasks) {
                 adapterTask.setAllItemTask(itemTasks);
+                if(recyclerView.getLayoutManager().getItemCount() == 0){
+                    root.findViewById(R.id.noTasks).setVisibility(View.VISIBLE);
+                    root.findViewById(R.id.noTasksText).setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -70,6 +74,7 @@ public class TasksFragment extends Fragment {
                 editor.putString("Task Name", itemTask.getTaskName());
                 editor.putString("Task Description", itemTask.getTaskDesc());
                 editor.putString("Task Date", itemTask.getTaskDate());
+                editor.putInt("Task Importance", itemTask.getTaskImportance());
                 editor.apply();
                 startActivity(new Intent(getActivity(), TaskView.class));
             }
@@ -103,9 +108,14 @@ public class TasksFragment extends Fragment {
             String taskName = data.getStringExtra(TaskCreate.EXTRA_NAME);
             String description = data.getStringExtra(TaskCreate.EXTRA_DESCRIPTION);
             String taskDate = data.getStringExtra(TaskCreate.EXTRA_DATE);
+            int importance = data.getIntExtra(TaskCreate.EXTRA_FLAG,'0');
 
-            ItemTask itemTask = new ItemTask(taskName, description, taskDate);
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance);
             allViewModel.insertTask(itemTask);
+
+            getView().findViewById(R.id.noTasks).setVisibility(View.INVISIBLE);
+            getView().findViewById(R.id.noTasksText).setVisibility(View.INVISIBLE);
+
             Toast.makeText(getActivity(), "Successfully created new task", Toast.LENGTH_LONG).show();
         }
     }

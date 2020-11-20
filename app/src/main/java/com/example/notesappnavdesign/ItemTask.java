@@ -6,10 +6,11 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class ItemTask {
-    public ItemTask(String taskName, String taskDesc, String taskDate) {
+    public ItemTask(String taskName, String taskDesc, String taskDate, int taskImportance) {
         this.taskName = taskName;
         this.taskDesc = taskDesc;
         this.taskDate = taskDate;
+        this.taskImportance = taskImportance;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -23,6 +24,9 @@ public class ItemTask {
 
     @ColumnInfo(name = "task_Date")
     private String taskDate;
+
+    @ColumnInfo(name = "task_Importance")
+    private int taskImportance;
 
     public int gettId() {
         return tId;
@@ -55,4 +59,8 @@ public class ItemTask {
     public void setTaskDate(String taskDate) {
         this.taskDate = taskDate;
     }
+
+    public int getTaskImportance() { return taskImportance; }
+
+    public void setTaskImportance(int taskImportance) { this.taskImportance = taskImportance; }
 }

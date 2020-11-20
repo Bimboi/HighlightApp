@@ -11,13 +11,14 @@ import java.util.List;
 public class AllViewModel extends AndroidViewModel {
 
     Repository taskRepository;
-    LiveData<List<ItemTask>> allTask, allToday;
+    LiveData<List<ItemTask>> allTask, allToday, allImportant;
 
     public AllViewModel(@NonNull Application application) {
         super(application);
         taskRepository = new Repository(application);
         allTask = taskRepository.getAllTask();
         allToday = taskRepository.getAllToday();
+        allImportant = taskRepository.getAllImportant();
     }
 
     public LiveData<List<ItemTask>> getAllTask(){
@@ -26,6 +27,10 @@ public class AllViewModel extends AndroidViewModel {
 
     public LiveData<List<ItemTask>> getAllToday(){
         return taskRepository.getAllToday();
+    }
+
+    public LiveData<List<ItemTask>> getAllImportant(){
+        return taskRepository.getAllImportant();
     }
 
     public void insertTask(ItemTask itemTask){

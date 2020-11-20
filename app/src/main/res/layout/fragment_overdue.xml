@@ -5,12 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.overdue.OverdueFragment">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarOption"
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarOverdue"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOverdue"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?android:windowBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_nav_menu" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/noTaskOverdue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/overdue_no_task_description"
+        android:src="@drawable/ic_overdue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/option_nav_menu" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noTaskOverdueText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/overdue_message"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/noTaskOverdue"
+        app:layout_constraintRight_toRightOf="@id/noTaskOverdue"
+        app:layout_constraintTop_toBottomOf="@id/noTaskOverdue" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.important.ImportantFragment">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarOption"
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarImportant"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarImportant"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?android:windowBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/option_nav_menu" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/importantRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarImportant"
+        tools:listitem="@layout/task_item" />
+
+    <ImageView
+        android:id="@+id/noTaskImportant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_important"
+        android:contentDescription="@string/important_no_task_description"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/option_nav_menu" />
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/noTaskImportantText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/important_message"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/noTaskImportant"
+        app:layout_constraintRight_toRightOf="@id/noTaskImportant"
+        app:layout_constraintLeft_toLeftOf="@id/noTaskImportant"
+        android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

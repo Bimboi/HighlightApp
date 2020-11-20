@@ -12,17 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.notesappnavdesign.AllViewModel;
 import com.example.notesappnavdesign.R;
 
 public class OverdueFragment extends Fragment {
-    private Toolbar toolbar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        AllViewModel allViewModel = ViewModelProviders.of(this).get(AllViewModel.class);
         View root = inflater.inflate(R.layout.fragment_overdue, container, false);
 
-        toolbar = root.findViewById(R.id.toolbarOption);
+        //temporary while no code for display
+        root.findViewById(R.id.noTaskOverdue).setVisibility(View.VISIBLE);
+        root.findViewById(R.id.noTaskOverdueText).setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = root.findViewById(R.id.toolbarOverdue);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
@@ -31,7 +37,7 @@ public class OverdueFragment extends Fragment {
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.edit_nav_menu, menu);
+        menuInflater.inflate(R.menu.option_nav_menu, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 

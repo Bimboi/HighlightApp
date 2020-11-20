@@ -4,7 +4,7 @@
 <item
     android:id="@+id/navigation_update"
     android:icon="@drawable/icon_edit_black"
-    android:title="Edit"
+    android:title="@string/edit_task"
     app:showAsAction="ifRoom"
     />
 </menu>

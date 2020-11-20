@@ -1,14 +1,21 @@
 package com.example.notesappnavdesign.ui.taskItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,21 +37,21 @@ public class TaskEdit extends AppCompatActivity {
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DESCRIPTION";
     public static final String EXTRA_DATE_EDIT
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DATE";
+    public static final String EXTRA_FLAG_EDIT
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_FLAG";
 
-    private Toolbar toolbar;
-    private TextView textViewName;
     private EditText editTextName;
     private EditText editTextDesc;
-    private Button buttonSave;
-    private Integer id;
-    private TextView taskDateEdit;
+    private EditText taskDateEdit;
+    private ImageView taskFlag;
+    private boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_edit);
 
-        toolbar = findViewById(R.id.toolbarBackTaskView);
+        Toolbar toolbar = findViewById(R.id.toolbarBackTaskView);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -54,72 +61,105 @@ public class TaskEdit extends AppCompatActivity {
             }
         });
 
-        textViewName = findViewById(R.id.textUpdateTask);
+        TextView textViewName = findViewById(R.id.textUpdateTask);
+        ImageView buttonDate = findViewById(R.id.date_edit_btn);
         editTextName = findViewById(R.id.taskNameUpdate);
         editTextDesc = findViewById(R.id.taskDescUpdate);
         taskDateEdit = findViewById(R.id.dateTextEdit);
+        taskFlag = findViewById(R.id.important_status_edit);
 
-        SharedPreferences preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
+        Bundle extras = getIntent().getExtras();
+        assert extras != null;
 
-        String name = getIntent().getStringExtra("name");
+        int importance = extras.getInt("importance", 0);
+        String name = extras.getString("name");
 
-        Log.d("name extra: ",name);
         textViewName.setText(name);
         editTextName.setText(name);
-        editTextDesc.setText(getIntent().getStringExtra("desc"));
-        taskDateEdit.setText(getIntent().getStringExtra("date"));
+        editTextDesc.setText(extras.getString("desc"));
+        taskDateEdit.setText(extras.getString("date"));
+        taskFlag.setImageDrawable(getImage(importance));
 
-        id = preferences.getInt("Task ID", 0);
-
-        buttonSave = findViewById(R.id.save_btn);
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveChanges();
-            }
-        });
-
-        ImageView buttonDate = findViewById(R.id.date_edit_btn);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
             }
         });
+
+        taskFlag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFlag();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_nav_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.navigation_save) {
+            saveChanges();
+        }
+        return false;
     }
 
     public void saveChanges() {
         String taskName = editTextName.getText().toString();
         String taskDesc = editTextDesc.getText().toString();
         String taskDate = taskDateEdit.getText().toString();
+        int taskImportance = flag ? 1 : 0;
 
-        if (!taskName.trim().isEmpty() && !taskDate.equals("dd-mm-yyyy")) {
+        if (!taskName.trim().isEmpty() && !taskDate.equals("")) {
             Intent data = new Intent();
-            data.putExtra(EXTRA_NAME_EDIT,taskName);
+            data.putExtra(EXTRA_NAME_EDIT, taskName);
             data.putExtra(EXTRA_DESCRIPTION_EDIT, taskDesc);
             data.putExtra(EXTRA_DATE_EDIT, taskDate);
+            data.putExtra(EXTRA_FLAG_EDIT, taskImportance);
 
-//            SharedPreferences.Editor editor = getSharedPreferences("My prefs", MODE_PRIVATE).edit();
-//            editor.putString("Task Name", taskName);
-//            editor.putString("Task Description", taskDesc);
-//            editor.putString("Task Date", taskDate);
-//            editor.apply();
-
-            setResult(RESULT_OK,data);
+            setResult(RESULT_OK, data);
             finish();
         } else {
             Toast.makeText(getApplicationContext(), "Please provide a name and date", Toast.LENGTH_LONG).show();
         }
     }
-    private void showDatePickerDialog(){
+
+    private Drawable getImage(int indicator) {
+        if (indicator == 0) {
+            flag = false;
+            return ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_important_notflag);
+        } else {
+            flag = true;
+            return ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_important_flag);
+        }
+    }
+
+    private void changeFlag() {
+        if (flag == false) {
+            taskFlag.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_important_flag));
+            flag = true;
+        } else {
+            taskFlag.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_important_notflag));
+            flag = false;
+        }
+    }
+
+    private void showDatePickerDialog() {
         new DatePickerDialog(
                 this,
                 android.R.style.Theme_DeviceDefault_Dialog,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        Calendar.getInstance().set(year,month,day);
-                        taskDateEdit.setText(day+"-"+month+"-"+year);
+                        Calendar.getInstance().set(year, month, day);
+                        month++;
+                        taskDateEdit.setText(day + "-" + month + "-" + year);
                     }
                 },
                 Calendar.getInstance().get(Calendar.YEAR),

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +39,7 @@ public class TaskView extends AppCompatActivity {
     private AllViewModel allViewModel;
     private SharedPreferences preferences;
     private String name, desc, date;
-    private Integer id;
+    private Integer id, importance;
     private TextView textTaskName, textDescription, textDate;
     private SimpleDateFormat dateFormat;
 
@@ -77,58 +78,15 @@ public class TaskView extends AppCompatActivity {
         desc = preferences.getString("Task Description", "");
         date = preferences.getString("Task Date", "");
         id = preferences.getInt("Task ID", 0);
+        importance = preferences.getInt("Task Importance", 0);
 
         textTaskName = findViewById(R.id.textName);
         textDescription = findViewById(R.id.textDescription);
         textDate = findViewById(R.id.textDate);
 
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        try {
-            Date d = dateFormat.parse(date);
-            Log.d("New Date: ", d.toString());
-            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
-            String strDate = dateFormat.format(d);
-            textDate.setText(strDate);
-
-        } catch (ParseException e) {
-            Log.d("Date Error: ", e.toString());
-        }
-
         textTaskName.setText(name);
         textDescription.setText(desc);
-
-    }
-
-    public void updateTask() {
-        Intent i = new Intent(getApplicationContext(), TaskCreate.class);
-        i.putExtra("name",name);
-        i.putExtra("desc", desc);
-        i.putExtra("date", date);
-        startActivityForResult(i, EDIT_TASK_REQUEST);
-    }
-
-    public void deleteTask() {
-        confirmDelete().show();
-    }
-
-    public AlertDialog confirmDelete() {
-        return new AlertDialog.Builder(this)
-                .setTitle("Confirm Delete")
-                .setMessage("You are about to permanently delete this.")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        allViewModel.deleteTaskById(id);
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create();
+        textDate.setText(reformatDate(date));
     }
 
     @Override
@@ -153,27 +111,74 @@ public class TaskView extends AppCompatActivity {
             String taskName = data.getStringExtra(TaskEdit.EXTRA_NAME_EDIT);
             String description = data.getStringExtra(TaskEdit.EXTRA_DESCRIPTION_EDIT);
             String taskDate = data.getStringExtra(TaskEdit.EXTRA_DATE_EDIT);
+            int importance = data.getIntExtra(TaskCreate.EXTRA_FLAG, 0);
 
-            ItemTask itemTask = new ItemTask(taskName, description, taskDate);
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance);
             itemTask.settId(id);
             allViewModel.updateTask(itemTask);
 
-            dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            try {
-                Date d = dateFormat.parse(taskDate);
-                Log.d("New Date EditResult: ", d.toString());
-                dateFormat.applyPattern("EEEE, MMM dd, yyyy");
-                String strDate = dateFormat.format(d);
-                textDate.setText(strDate);
-
-            } catch (ParseException e) {
-                Log.d("Date Error EditResult: ", e.toString());
-            }
-
             textTaskName.setText(taskName);
             textDescription.setText(description);
+            textDate.setText(reformatDate(taskDate));
+
+            updateActivityData(taskName, description, taskDate, importance);
 
             Toast.makeText(getApplicationContext(), "Successfully updated task", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void updateTask() {
+        Intent i = new Intent(getApplicationContext(), TaskEdit.class);
+        i.putExtra("name", name);
+        i.putExtra("desc", desc);
+        i.putExtra("date", date);
+        i.putExtra("importance", importance);
+        startActivityForResult(i, EDIT_TASK_REQUEST);
+    }
+
+    public void deleteTask() {
+        confirmDelete().show();
+    }
+
+    public AlertDialog confirmDelete() {
+        return new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete")
+                .setMessage("You are about to permanently delete this.")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        allViewModel.deleteTaskById(id);
+                        onBackPressed();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+    }
+
+    public String reformatDate(String date) {
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Date d = dateFormat.parse(date);
+            Log.d("New Date: ", d.toString());
+            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
+            String strDate = dateFormat.format(d);
+            return strDate;
+
+        } catch (ParseException e) {
+            Log.d("Date Error: ", e.toString());
+            return "Error string";
+        }
+    }
+
+    public void updateActivityData(String newName, String newDesc, String newDate, int newFlag) {
+        this.name = newName;
+        this.desc = newDesc;
+        this.date = newDate;
+        this.importance = newFlag;
     }
 }

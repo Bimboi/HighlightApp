@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">Basic TODO</string>
-    <string name="title_tasks">Tasks</string>
+    <string name="title_tasks">All Tasks</string>
     <string name="title_today">Today</string>
     <string name="title_schedule">Schedule</string>
     <string name="title_important">Important</string>
     <string name="title_overdue">Overdue</string>
     <string name="title_finished">Finished</string>
+
     <string name="create_task">Create New Task</string>
     <string name="add_task">Add</string>
     <string name="update_task">Save</string>
+    <string name="edit_task">Edit</string>
+
     <string name="add_name_task">Add Name</string>
     <string name="add_description_task">Add description</string>
     <string name="name_text">Name</string>
@@ -19,7 +22,15 @@
     <string name="date_title_task">Date</string>
     <string name="icon_desc_card">Icon for Task</string>
     <string name="icon_date">Icon for Date</string>
-    <string name="date_pattern">dd-mm-yyyy</string>
-    <string name="today_message">No task for today...</string>
-    <string name="today_no_task_description">When no task</string>
+    <string name="date_pattern">Set Date</string>
+
+    <string name="today_message">No task for today</string>
+    <string name="important_message">Seems nothing is crucial</string>
+    <string name="overdue_message">It is better late than never</string>
+    <string name="all_tasks_message">Create a task here</string>
+
+    <string name="today_no_task_description">When no task today</string>
+    <string name="important_no_task_description">When no important task</string>
+    <string name="overdue_no_task_description">When no overdue task</string>
+    <string name="all_no_task_description">When no task at all</string>
 </resources>

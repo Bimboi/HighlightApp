@@ -1,12 +1,16 @@
 package com.example.notesappnavdesign;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -32,19 +36,11 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     @Override
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
         ItemTask currentItemTask = allItemTask.get(position);
-        String strDate = currentItemTask.getTaskDate();
-        Log.d("Date: ",strDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        try {
-            Date d = dateFormat.parse(strDate);
-            Log.d("New Date: ",d.toString());
-            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
-            String date = dateFormat.format(d);
-            holder.textViewItemDate.setText(date);
-        } catch (ParseException e) {
-            Log.d("Date Error: ",e.toString());
-        }
+        Context context = holder.imageViewItemFlag.getContext();
+
         holder.textViewItemTaskName.setText(currentItemTask.getTaskName());
+        holder.textViewItemDate.setText(reformatDate(currentItemTask.getTaskDate()));
+        holder.imageViewItemFlag.setImageDrawable(getImage(currentItemTask.getTaskImportance(),context));
     }
 
     @Override
@@ -60,11 +56,13 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     class TaskHolder extends RecyclerView.ViewHolder {
         private TextView textViewItemTaskName;
         private TextView textViewItemDate;
+        private ImageView imageViewItemFlag;
 
         public TaskHolder(final View itemView) {
             super(itemView);
             textViewItemTaskName = itemView.findViewById(R.id.itemTaskName);
             textViewItemDate = itemView.findViewById(R.id.itemDate);
+            imageViewItemFlag = itemView.findViewById(R.id.importance_label);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,4 +84,25 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         this.listener = listener;
     }
 
+    public String reformatDate(String date){
+        Log.d("Date: ",date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Date d = dateFormat.parse(date);
+            Log.d("New Date: ",d.toString());
+            dateFormat.applyPattern("EEEE, MMM dd, yyyy");
+            return dateFormat.format(d);
+        } catch (ParseException e) {
+            Log.d("Date Error: ",e.toString());
+            return "Error date";
+        }
+    }
+
+    public Drawable getImage(int indicator, Context con){
+        if (indicator == 0) {
+            return ContextCompat.getDrawable(con, R.drawable.ic_important_notflag);
+        } else {
+            return ContextCompat.getDrawable(con, R.drawable.ic_important_flag);
+        }
+    }
 }
