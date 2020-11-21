@@ -11,7 +11,7 @@ import java.util.List;
 public class Repository {
     private TaskDao taskDao;
     private TasksDatabase database;
-    private LiveData<List<ItemTask>> allTask, allToday, allImportant;
+    private LiveData<List<ItemTask>> allTask, allToday, allImportant, allOverdue;
 
     public Repository(Application application){
         database = TasksDatabase.getInstance(application);
@@ -19,6 +19,7 @@ public class Repository {
         allTask = taskDao.getAllTask();
         allToday = taskDao.getTodayTask();
         allImportant = taskDao.getImportantTask();
+        allOverdue = taskDao.getOverdueTask();
     }
 
     public void insertTask(ItemTask itemTask){
@@ -43,6 +44,10 @@ public class Repository {
 
     public LiveData<List<ItemTask>> getAllImportant(){
         return allImportant;
+    }
+
+    public LiveData<List<ItemTask>> getAllOverdue(){
+        return allOverdue;
     }
 
     private static class InsertItemTaskAsync extends AsyncTask<ItemTask, Void, Void>{

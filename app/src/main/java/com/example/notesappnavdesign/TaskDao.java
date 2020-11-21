@@ -23,6 +23,9 @@ public interface TaskDao {
     @Query("Select * FROM ItemTask WHERE task_Importance=1")
     LiveData<List<ItemTask>> getImportantTask();
 
+    @Query("Select * FROM ItemTask WHERE task_Date<strftime('%d-%m-%Y','now')")
+    LiveData<List<ItemTask>> getOverdueTask();
+
     @Insert
     void insertTask(ItemTask itemTask);
 

@@ -24,12 +24,26 @@
             app:menu="@menu/option_nav_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/overdueRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarOverdue"
+        tools:listitem="@layout/task_item" />
+
     <ImageView
         android:id="@+id/noTaskOverdue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/overdue_no_task_description"
-        android:src="@drawable/ic_overdue"
+        android:src="@drawable/ic_overdue_message"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

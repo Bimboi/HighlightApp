@@ -11,7 +11,7 @@ import java.util.List;
 public class AllViewModel extends AndroidViewModel {
 
     Repository taskRepository;
-    LiveData<List<ItemTask>> allTask, allToday, allImportant;
+    LiveData<List<ItemTask>> allTask, allToday, allImportant, allOverdue;
 
     public AllViewModel(@NonNull Application application) {
         super(application);
@@ -19,6 +19,7 @@ public class AllViewModel extends AndroidViewModel {
         allTask = taskRepository.getAllTask();
         allToday = taskRepository.getAllToday();
         allImportant = taskRepository.getAllImportant();
+        allOverdue = taskRepository.getAllOverdue();
     }
 
     public LiveData<List<ItemTask>> getAllTask(){
@@ -31,6 +32,10 @@ public class AllViewModel extends AndroidViewModel {
 
     public LiveData<List<ItemTask>> getAllImportant(){
         return taskRepository.getAllImportant();
+    }
+
+    public LiveData<List<ItemTask>> getAllOverdue(){
+        return taskRepository.getAllOverdue();
     }
 
     public void insertTask(ItemTask itemTask){

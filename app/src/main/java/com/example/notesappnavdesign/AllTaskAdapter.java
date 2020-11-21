@@ -40,7 +40,8 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
 
         holder.textViewItemTaskName.setText(currentItemTask.getTaskName());
         holder.textViewItemDate.setText(reformatDate(currentItemTask.getTaskDate()));
-        holder.imageViewItemFlag.setImageDrawable(getImage(currentItemTask.getTaskImportance(),context));
+        holder.imageViewItemFlag.setImageDrawable(getImageImportance(currentItemTask.getTaskImportance(),context));
+        holder.imageViewItemOverdue.setImageDrawable(getImageOverdue(currentItemTask.getTaskDate(), context));
     }
 
     @Override
@@ -57,12 +58,14 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         private TextView textViewItemTaskName;
         private TextView textViewItemDate;
         private ImageView imageViewItemFlag;
+        private ImageView imageViewItemOverdue;
 
         public TaskHolder(final View itemView) {
             super(itemView);
             textViewItemTaskName = itemView.findViewById(R.id.itemTaskName);
             textViewItemDate = itemView.findViewById(R.id.itemDate);
             imageViewItemFlag = itemView.findViewById(R.id.importance_label);
+            imageViewItemOverdue = itemView.findViewById(R.id.overdue_label);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,11 +101,26 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         }
     }
 
-    public Drawable getImage(int indicator, Context con){
+    public Drawable getImageImportance(int indicator, Context con){
         if (indicator == 0) {
             return ContextCompat.getDrawable(con, R.drawable.ic_important_notflag);
         } else {
             return ContextCompat.getDrawable(con, R.drawable.ic_important_flag);
         }
+    }
+
+    public Drawable getImageOverdue(String strDate, Context con){
+        Drawable image = ContextCompat.getDrawable(con, R.drawable.ic_not_overdue);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try{
+            Date d = dateFormat.parse(strDate);
+            assert d != null;
+            if(d.compareTo(dateFormat.parse(dateFormat.format(new Date()))) < 0){
+                image = ContextCompat.getDrawable(con, R.drawable.ic_overdue);
+            }
+        }catch(ParseException e){
+            Log.d("Date Overdue Error: ",e.toString());
+        }
+        return image;
     }
 }
