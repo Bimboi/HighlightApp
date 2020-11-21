@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface TaskDao {
-    @Query("Select * FROM ItemTask")
+    @Query("Select * FROM ItemTask ORDER BY task_Date")
     LiveData<List<ItemTask>> getAllTask();
 
     @Query("DELETE FROM itemtask WHERE tId=:id")
@@ -20,10 +20,10 @@ public interface TaskDao {
     @Query("Select * FROM ItemTask WHERE task_Date=strftime('%d-%m-%Y','now')")
     LiveData<List<ItemTask>> getTodayTask();
 
-    @Query("Select * FROM ItemTask WHERE task_Importance=1")
+    @Query("Select * FROM ItemTask WHERE task_Importance=1 ORDER BY task_Date")
     LiveData<List<ItemTask>> getImportantTask();
 
-    @Query("Select * FROM ItemTask WHERE task_Date<strftime('%d-%m-%Y','now')")
+    @Query("Select * FROM ItemTask WHERE task_Date<strftime('%d-%m-%Y','now') ORDER BY task_Date")
     LiveData<List<ItemTask>> getOverdueTask();
 
     @Insert
