@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -30,6 +31,7 @@
             android:layout_toEndOf="@+id/sampleTaskIcon"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="@color/colorBlack"
             android:text="@string/add_name_task"
             android:textSize="15sp" />
 
@@ -40,6 +42,7 @@
             android:layout_below="@+id/itemTaskName"
             android:layout_alignStart="@+id/itemTaskName"
             android:layout_marginStart="0dp"
+            android:textColor="@color/colorBlack"
             android:text="@string/date_title_task"
             android:textSize="12sp" />
 

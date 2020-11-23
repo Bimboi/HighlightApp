@@ -13,12 +13,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
 import com.example.notesappnavdesign.AllViewModel;
 import com.example.notesappnavdesign.ui.tasks.TasksFragment;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,10 +41,12 @@ public class TaskView extends AppCompatActivity {
 
     private AllViewModel allViewModel;
     private SharedPreferences preferences;
-    private String name, desc, date;
+    private String name, desc, date, color;
     private Integer id, importance;
     private TextView textTaskName, textDescription, textDate;
     private SimpleDateFormat dateFormat;
+    private AppBarLayout appBarLayout;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class TaskView extends AppCompatActivity {
         date = preferences.getString("Task Date", "");
         id = preferences.getInt("Task ID", 0);
         importance = preferences.getInt("Task Importance", 0);
+        color = preferences.getString("Task Color", "");
 
         textTaskName = findViewById(R.id.textName);
         textDescription = findViewById(R.id.textDescription);
@@ -87,6 +93,13 @@ public class TaskView extends AppCompatActivity {
         textTaskName.setText(name);
         textDescription.setText(desc);
         textDate.setText(reformatDate(date));
+
+        appBarLayout = findViewById(R.id.appBarView);
+        scrollView = findViewById(R.id.taskScrollView);
+
+        appBarLayout.setBackgroundColor(Color.parseColor(color));
+        scrollView.setBackgroundColor(Color.parseColor(color));
+
     }
 
     @Override
@@ -111,9 +124,10 @@ public class TaskView extends AppCompatActivity {
             String taskName = data.getStringExtra(TaskEdit.EXTRA_NAME_EDIT);
             String description = data.getStringExtra(TaskEdit.EXTRA_DESCRIPTION_EDIT);
             String taskDate = data.getStringExtra(TaskEdit.EXTRA_DATE_EDIT);
-            int importance = data.getIntExtra(TaskCreate.EXTRA_FLAG, 0);
+            int importance = data.getIntExtra(TaskEdit.EXTRA_FLAG_EDIT, 0);
+            String color = data.getStringExtra(TaskEdit.EXTRA_COLOR_EDIT);
 
-            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance);
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance, color);
             itemTask.settId(id);
             allViewModel.updateTask(itemTask);
 
@@ -121,7 +135,9 @@ public class TaskView extends AppCompatActivity {
             textDescription.setText(description);
             textDate.setText(reformatDate(taskDate));
 
-            updateActivityData(taskName, description, taskDate, importance);
+            updateActivityData(taskName, description, taskDate, importance, color);
+            appBarLayout.setBackgroundColor(Color.parseColor(color));
+            scrollView.setBackgroundColor(Color.parseColor(color));
 
             Toast.makeText(getApplicationContext(), "Successfully updated task", Toast.LENGTH_LONG).show();
         }
@@ -133,6 +149,7 @@ public class TaskView extends AppCompatActivity {
         i.putExtra("desc", desc);
         i.putExtra("date", date);
         i.putExtra("importance", importance);
+        i.putExtra("color", color);
         startActivityForResult(i, EDIT_TASK_REQUEST);
     }
 
@@ -175,10 +192,31 @@ public class TaskView extends AppCompatActivity {
         }
     }
 
-    public void updateActivityData(String newName, String newDesc, String newDate, int newFlag) {
+    public void updateActivityData(String newName, String newDesc, String newDate, int newFlag,
+                                   String color) {
         this.name = newName;
         this.desc = newDesc;
         this.date = newDate;
         this.importance = newFlag;
+        this.color = color;
+    }
+
+    public String getLightColor(@NonNull String origColor) {
+        String equivalent = "";
+        switch (origColor) {
+            case "#1A1A1A":
+                equivalent = "#494949";
+                break;
+            case "#12A4D9":
+                equivalent = "#8EC5D9";
+                break;
+            case "#D9138A":
+                equivalent = "#F181C3";
+                break;
+            case "#E2D810":
+                equivalent = "#E2E165";
+                break;
+        }
+        return equivalent;
     }
 }

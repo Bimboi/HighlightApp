@@ -67,6 +67,7 @@ public class ImportantFragment extends Fragment {
                 editor.putString("Task Description", itemTask.getTaskDesc());
                 editor.putString("Task Date", itemTask.getTaskDate());
                 editor.putInt("Task Importance", itemTask.getTaskImportance());
+                editor.putString("Task Color", itemTask.getTaskColor());
                 editor.apply();
                 startActivity(new Intent(getActivity(), TaskView.class));
             }

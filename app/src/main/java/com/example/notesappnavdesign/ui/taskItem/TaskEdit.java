@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -24,10 +26,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesappnavdesign.ColorAdapter;
 import com.example.notesappnavdesign.ItemTask;
 import com.example.notesappnavdesign.R;
 import com.example.notesappnavdesign.AllViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TaskEdit extends AppCompatActivity {
@@ -39,12 +43,15 @@ public class TaskEdit extends AppCompatActivity {
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DATE";
     public static final String EXTRA_FLAG_EDIT
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_FLAG";
+    public static final String EXTRA_COLOR_EDIT
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_COLOR";
 
     private EditText editTextName;
     private EditText editTextDesc;
     private EditText taskDateEdit;
     private ImageView taskFlag;
     private boolean flag;
+    private String color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,7 @@ public class TaskEdit extends AppCompatActivity {
 
         int importance = extras.getInt("importance", 0);
         String name = extras.getString("name");
+        color = extras.getString("color");
 
         textViewName.setText(name);
         editTextName.setText(name);
@@ -91,6 +99,21 @@ public class TaskEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 changeFlag();
+            }
+        });
+
+        RecyclerView recyclerView = findViewById(R.id.colorEditRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setHasFixedSize(true);
+
+        ColorAdapter adapterColor = new ColorAdapter(getArrayList(color));
+        recyclerView.setAdapter(adapterColor);
+
+        adapterColor.setOnItemClickListener(new ColorAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String strColor) {
+                color = strColor;
             }
         });
     }
@@ -122,6 +145,7 @@ public class TaskEdit extends AppCompatActivity {
             data.putExtra(EXTRA_DESCRIPTION_EDIT, taskDesc);
             data.putExtra(EXTRA_DATE_EDIT, taskDate);
             data.putExtra(EXTRA_FLAG_EDIT, taskImportance);
+            data.putExtra(EXTRA_COLOR_EDIT, color);
 
             setResult(RESULT_OK, data);
             finish();
@@ -165,5 +189,48 @@ public class TaskEdit extends AppCompatActivity {
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private ArrayList getArrayList(String color){
+        ArrayList<String> colorImages = new ArrayList<>();
+        colorImages.clear();
+        switch (color){
+            case "#FFFFFF":
+                colorImages.add("no color");
+                colorImages.add("black");
+                colorImages.add("cyan");
+                colorImages.add("magenta");
+                colorImages.add("yellow");
+                break;
+            case "#494949":
+                colorImages.add("colored");
+                colorImages.add("black enable");
+                colorImages.add("cyan");
+                colorImages.add("magenta");
+                colorImages.add("yellow");
+                break;
+            case "#8EC5D9":
+                colorImages.add("colored");
+                colorImages.add("black");
+                colorImages.add("cyan enable");
+                colorImages.add("magenta");
+                colorImages.add("yellow");
+                break;
+            case "#F181C3":
+                colorImages.add("colored");
+                colorImages.add("black");
+                colorImages.add("cyan");
+                colorImages.add("magenta enable");
+                colorImages.add("yellow");
+                break;
+            case "#E2E165":
+                colorImages.add("colored");
+                colorImages.add("black");
+                colorImages.add("cyan");
+                colorImages.add("magenta");
+                colorImages.add("yellow enable");
+                break;
+        }
+        return colorImages;
     }
 }

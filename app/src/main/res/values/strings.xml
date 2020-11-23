@@ -23,6 +23,7 @@
     <string name="icon_desc_card">Icon for Task</string>
     <string name="icon_date">Icon for Date</string>
     <string name="date_pattern">Set Date</string>
+    <string name="color_text">Color</string>
 
     <string name="today_message">No task for today</string>
     <string name="important_message">Seems nothing is crucial</string>

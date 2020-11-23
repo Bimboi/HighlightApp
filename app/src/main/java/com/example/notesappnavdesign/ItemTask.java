@@ -6,11 +6,13 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class ItemTask {
-    public ItemTask(String taskName, String taskDesc, String taskDate, int taskImportance) {
+    public ItemTask(String taskName, String taskDesc, String taskDate, int taskImportance,
+                    String taskColor) {
         this.taskName = taskName;
         this.taskDesc = taskDesc;
         this.taskDate = taskDate;
         this.taskImportance = taskImportance;
+        this.taskColor = taskColor;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -27,6 +29,9 @@ public class ItemTask {
 
     @ColumnInfo(name = "task_Importance")
     private int taskImportance;
+
+    @ColumnInfo(name = "task_Color")
+    private String taskColor;
 
     public int gettId() {
         return tId;
@@ -60,7 +65,19 @@ public class ItemTask {
         this.taskDate = taskDate;
     }
 
-    public int getTaskImportance() { return taskImportance; }
+    public int getTaskImportance() {
+        return taskImportance;
+    }
 
-    public void setTaskImportance(int taskImportance) { this.taskImportance = taskImportance; }
+    public void setTaskImportance(int taskImportance) {
+        this.taskImportance = taskImportance;
+    }
+
+    public String getTaskColor() {
+        return taskColor;
+    }
+
+    public void setTaskColor(String taskColor) {
+        this.taskColor = taskColor;
+    }
 }

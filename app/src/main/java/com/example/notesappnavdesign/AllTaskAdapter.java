@@ -1,15 +1,18 @@
 package com.example.notesappnavdesign;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +45,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         holder.textViewItemDate.setText(reformatDate(currentItemTask.getTaskDate()));
         holder.imageViewItemFlag.setImageDrawable(getImageImportance(currentItemTask.getTaskImportance(),context));
         holder.imageViewItemOverdue.setImageDrawable(getImageOverdue(currentItemTask.getTaskDate(), context));
+        holder.cardView.setCardBackgroundColor(Color.parseColor(currentItemTask.getTaskColor()));
     }
 
     @Override
@@ -59,6 +63,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         private TextView textViewItemDate;
         private ImageView imageViewItemFlag;
         private ImageView imageViewItemOverdue;
+        private CardView cardView;
 
         public TaskHolder(final View itemView) {
             super(itemView);
@@ -66,6 +71,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
             textViewItemDate = itemView.findViewById(R.id.itemDate);
             imageViewItemFlag = itemView.findViewById(R.id.importance_label);
             imageViewItemOverdue = itemView.findViewById(R.id.overdue_label);
+            cardView = itemView.findViewById(R.id.cardView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

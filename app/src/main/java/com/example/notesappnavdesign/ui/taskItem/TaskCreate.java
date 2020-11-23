@@ -4,17 +4,16 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +21,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notesappnavdesign.ColorAdapter;
 import com.example.notesappnavdesign.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,12 +40,15 @@ public class TaskCreate extends AppCompatActivity{
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_DATE";
     public static final String EXTRA_FLAG
             = "com.example.notesappnavdesign.ui.taskItem.EXTRA_FLAG";
+    public static final String EXTRA_COLOR
+            = "com.example.notesappnavdesign.ui.taskItem.EXTRA_COLOR";
 
     private EditText dateText;
     private EditText editTextName;
     private EditText editTextDesc;
     private ImageView taskImportance;
     private boolean flag;
+    private String color;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +66,6 @@ public class TaskCreate extends AppCompatActivity{
         });
 
         dateText = findViewById(R.id.dateText);
-//        dateText.setPaintFlags(dateText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
         ImageView buttonDate = findViewById(R.id.date_pick_btn);
         editTextName = findViewById(R.id.taskName);
         editTextDesc = findViewById(R.id.taskDesc);
@@ -80,6 +84,28 @@ public class TaskCreate extends AppCompatActivity{
             public void onClick(View view) {
                 Log.d("Flag function: ","clicked");
                 changeFlag();
+            }
+        });
+
+        ArrayList<String> colorImages = new ArrayList<>();
+        colorImages.add("no color");
+        colorImages.add("black");
+        colorImages.add("cyan");
+        colorImages.add("magenta");
+        colorImages.add("yellow");
+
+        RecyclerView recyclerView = findViewById(R.id.colorRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setHasFixedSize(true);
+
+        ColorAdapter adapterColor = new ColorAdapter(colorImages);
+        recyclerView.setAdapter(adapterColor);
+
+        adapterColor.setOnItemClickListener(new ColorAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String strColor) {
+                color = strColor;
             }
         });
     }
@@ -113,6 +139,7 @@ public class TaskCreate extends AppCompatActivity{
             data.putExtra(EXTRA_DESCRIPTION, taskDesc);
             data.putExtra(EXTRA_DATE, taskDate);
             data.putExtra(EXTRA_FLAG, taskImportance);
+            data.putExtra(EXTRA_COLOR, color);
 
             setResult(RESULT_OK,data);
             finish();

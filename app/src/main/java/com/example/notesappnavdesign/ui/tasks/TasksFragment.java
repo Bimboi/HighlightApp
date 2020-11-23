@@ -54,7 +54,7 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChanged(List<ItemTask> itemTasks) {
                 adapterTask.setAllItemTask(itemTasks);
-                if(recyclerView.getLayoutManager().getItemCount() == 0){
+                if (recyclerView.getLayoutManager().getItemCount() == 0) {
                     root.findViewById(R.id.noTasks).setVisibility(View.VISIBLE);
                     root.findViewById(R.id.noTasksText).setVisibility(View.VISIBLE);
                 }
@@ -75,6 +75,7 @@ public class TasksFragment extends Fragment {
                 editor.putString("Task Description", itemTask.getTaskDesc());
                 editor.putString("Task Date", itemTask.getTaskDate());
                 editor.putInt("Task Importance", itemTask.getTaskImportance());
+                editor.putString("Task Color", itemTask.getTaskColor());
                 editor.apply();
                 startActivity(new Intent(getActivity(), TaskView.class));
             }
@@ -108,9 +109,10 @@ public class TasksFragment extends Fragment {
             String taskName = data.getStringExtra(TaskCreate.EXTRA_NAME);
             String description = data.getStringExtra(TaskCreate.EXTRA_DESCRIPTION);
             String taskDate = data.getStringExtra(TaskCreate.EXTRA_DATE);
-            int importance = data.getIntExtra(TaskCreate.EXTRA_FLAG,'0');
+            int importance = data.getIntExtra(TaskCreate.EXTRA_FLAG, '0');
+            String color = data.getStringExtra(TaskCreate.EXTRA_COLOR);
 
-            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance);
+            ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance, color);
             allViewModel.insertTask(itemTask);
 
             getView().findViewById(R.id.noTasks).setVisibility(View.INVISIBLE);
