@@ -59,9 +59,9 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorHolder>
 
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         Log.d("Inside onClick Color:",currentColor);
+                        updatedColors.clear();
                         switch(currentColor){
                             case "colored":
-                                updatedColors.clear();
                                 updatedColors.add("no color");
                                 updatedColors.add("black");
                                 updatedColors.add("cyan");
@@ -72,7 +72,6 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorHolder>
                                 listener.onItemClick("#FFFFFF");
                                 break;
                             case "black":
-                                updatedColors.clear();
                                 updatedColors.add("colored");
                                 updatedColors.add("black enable");
                                 updatedColors.add("cyan");
@@ -83,7 +82,6 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorHolder>
                                 listener.onItemClick("#494949"); //#1A1A1A
                                 break;
                             case "cyan":
-                                updatedColors.clear();
                                 updatedColors.add("colored");
                                 updatedColors.add("black");
                                 updatedColors.add("cyan enable");
@@ -94,7 +92,6 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorHolder>
                                 listener.onItemClick("#8EC5D9"); //#12A4D9
                                 break;
                             case "magenta":
-                                updatedColors.clear();
                                 updatedColors.add("colored");
                                 updatedColors.add("black");
                                 updatedColors.add("cyan");
@@ -105,7 +102,6 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorHolder>
                                 listener.onItemClick("#F181C3"); //#D9138A
                                 break;
                             case "yellow":
-                                updatedColors.clear();
                                 updatedColors.add("colored");
                                 updatedColors.add("black");
                                 updatedColors.add("cyan");

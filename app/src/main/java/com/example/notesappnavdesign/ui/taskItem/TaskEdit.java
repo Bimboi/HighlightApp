@@ -33,6 +33,7 @@ import com.example.notesappnavdesign.AllViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class TaskEdit extends AppCompatActivity {
     public static final String EXTRA_NAME_EDIT
@@ -52,6 +53,7 @@ public class TaskEdit extends AppCompatActivity {
     private ImageView taskFlag;
     private boolean flag;
     private String color;
+    private String formatDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class TaskEdit extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarBackTaskView);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,7 +167,7 @@ public class TaskEdit extends AppCompatActivity {
     }
 
     private void changeFlag() {
-        if (flag == false) {
+        if (!flag) {
             taskFlag.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_important_flag));
             flag = true;
         } else {
@@ -183,7 +185,12 @@ public class TaskEdit extends AppCompatActivity {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         Calendar.getInstance().set(year, month, day);
                         month++;
-                        taskDateEdit.setText(day + "-" + month + "-" + year);
+                        if(day < 10){
+                            formatDay = "0" + day;
+                        } else {
+                            formatDay = day + "";
+                        }
+                        taskDateEdit.setText(formatDay + "-" + month + "-" + year);
                     }
                 },
                 Calendar.getInstance().get(Calendar.YEAR),
@@ -191,7 +198,7 @@ public class TaskEdit extends AppCompatActivity {
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    private ArrayList getArrayList(String color){
+    private ArrayList<String> getArrayList(String color){
         ArrayList<String> colorImages = new ArrayList<>();
         colorImages.clear();
         switch (color){

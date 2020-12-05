@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/important_layout"
     tools:context=".ui.important.ImportantFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarImportant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:windowBackground"
         app:layout_constraintTop_toTopOf="parent"
         app:elevation="0dp">
 
@@ -17,7 +19,6 @@
             android:id="@+id/toolbarImportant"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?android:windowBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

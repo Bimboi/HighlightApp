@@ -61,7 +61,7 @@
             android:paddingBottom="10dp">
 
             <TextView
-                android:id="@+id/taskDateTitle"
+                android:id="@+id/textTitleDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="30dp"

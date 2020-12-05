@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
-    android:id="@+id/navigation_bg_color"
-    android:title="Switch Dark Mode"
-    app:showAsAction="never"/>
+    android:id="@+id/navigation_update_white"
+    android:icon="@drawable/icon_edit"
+    android:title="@string/edit_task"
+    app:showAsAction="ifRoom"
+    />
 </menu>

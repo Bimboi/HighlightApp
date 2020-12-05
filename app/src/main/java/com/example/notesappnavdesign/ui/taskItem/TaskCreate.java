@@ -30,6 +30,7 @@ import com.example.notesappnavdesign.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class TaskCreate extends AppCompatActivity{
     public static final String EXTRA_NAME
@@ -48,7 +49,9 @@ public class TaskCreate extends AppCompatActivity{
     private EditText editTextDesc;
     private ImageView taskImportance;
     private boolean flag;
+    private String date;
     private String color;
+    private String formatDay;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class TaskCreate extends AppCompatActivity{
 
         Toolbar toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +105,7 @@ public class TaskCreate extends AppCompatActivity{
         ColorAdapter adapterColor = new ColorAdapter(colorImages);
         recyclerView.setAdapter(adapterColor);
 
+        color = "#FFFFFF";
         adapterColor.setOnItemClickListener(new ColorAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String strColor) {
@@ -139,6 +143,7 @@ public class TaskCreate extends AppCompatActivity{
             data.putExtra(EXTRA_DESCRIPTION, taskDesc);
             data.putExtra(EXTRA_DATE, taskDate);
             data.putExtra(EXTRA_FLAG, taskImportance);
+            Log.d("Color here: ",color);
             data.putExtra(EXTRA_COLOR, color);
 
             setResult(RESULT_OK,data);
@@ -157,7 +162,12 @@ public class TaskCreate extends AppCompatActivity{
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         month++;
                         Log.d("Date Calendar: ", new Date()+"");
-                        dateText.setText(day+"-"+month+"-"+year);
+                        if(day < 10){
+                            formatDay = "0" + day;
+                        } else {
+                            formatDay = day + "";
+                        }
+                        dateText.setText(formatDay+"-"+month+"-"+year);
                     }
                 },
                 Calendar.getInstance().get(Calendar.YEAR),
@@ -167,7 +177,7 @@ public class TaskCreate extends AppCompatActivity{
 
     private void changeFlag(){
         Log.d("Flag function: ","inside");
-        if(flag == false){
+        if(!flag){
             taskImportance.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_important_flag));
             flag = true;
             Log.d("Flag function:",flag+"");

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,16 +36,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class TaskView extends AppCompatActivity {
     public static final int EDIT_TASK_REQUEST = 2;
 
     private AllViewModel allViewModel;
-    private SharedPreferences preferences;
     private String name, desc, date, color;
     private Integer id, importance;
-    private TextView textTaskName, textDescription, textDate;
-    private SimpleDateFormat dateFormat;
+    private TextView textTaskName, textDescription, textDate, textTitleDesc, textTitleDate;
     private AppBarLayout appBarLayout;
     private ScrollView scrollView;
 
@@ -58,7 +58,7 @@ public class TaskView extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarBackHome);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +77,7 @@ public class TaskView extends AppCompatActivity {
             }
         });
 
-        preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("My prefs", MODE_PRIVATE);
 
         name = preferences.getString("Task Name", "");
         desc = preferences.getString("Task Description", "");
@@ -86,9 +86,13 @@ public class TaskView extends AppCompatActivity {
         importance = preferences.getInt("Task Importance", 0);
         color = preferences.getString("Task Color", "");
 
+        if(desc.equals("")){ desc = "No description"; }
+
         textTaskName = findViewById(R.id.textName);
         textDescription = findViewById(R.id.textDescription);
         textDate = findViewById(R.id.textDate);
+        textTitleDesc = findViewById(R.id.textTitleDescription);
+        textTitleDate = findViewById(R.id.textTitleDate);
 
         textTaskName.setText(name);
         textDescription.setText(desc);
@@ -97,21 +101,23 @@ public class TaskView extends AppCompatActivity {
         appBarLayout = findViewById(R.id.appBarView);
         scrollView = findViewById(R.id.taskScrollView);
 
-        appBarLayout.setBackgroundColor(Color.parseColor(color));
-        scrollView.setBackgroundColor(Color.parseColor(color));
-
+        applyColor(color);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_nav_menu, menu);
+        if (color.equals("#494949")) {
+            inflater.inflate(R.menu.edit_nav_menu_white, menu);
+        } else {
+            inflater.inflate(R.menu.edit_nav_menu, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.navigation_update) {
+        if (item.getItemId() == R.id.navigation_update || item.getItemId() == R.id.navigation_update_white) {
             updateTask();
         }
         return false;
@@ -121,6 +127,7 @@ public class TaskView extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
+            assert data != null;
             String taskName = data.getStringExtra(TaskEdit.EXTRA_NAME_EDIT);
             String description = data.getStringExtra(TaskEdit.EXTRA_DESCRIPTION_EDIT);
             String taskDate = data.getStringExtra(TaskEdit.EXTRA_DATE_EDIT);
@@ -136,8 +143,8 @@ public class TaskView extends AppCompatActivity {
             textDate.setText(reformatDate(taskDate));
 
             updateActivityData(taskName, description, taskDate, importance, color);
-            appBarLayout.setBackgroundColor(Color.parseColor(color));
-            scrollView.setBackgroundColor(Color.parseColor(color));
+            applyColor(color);
+            invalidateOptionsMenu();
 
             Toast.makeText(getApplicationContext(), "Successfully updated task", Toast.LENGTH_LONG).show();
         }
@@ -178,13 +185,13 @@ public class TaskView extends AppCompatActivity {
     }
 
     public String reformatDate(String date) {
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             Date d = dateFormat.parse(date);
+            assert d != null;
             Log.d("New Date: ", d.toString());
             dateFormat.applyPattern("EEEE, MMM dd, yyyy");
-            String strDate = dateFormat.format(d);
-            return strDate;
+            return dateFormat.format(d);
 
         } catch (ParseException e) {
             Log.d("Date Error: ", e.toString());
@@ -201,22 +208,52 @@ public class TaskView extends AppCompatActivity {
         this.color = color;
     }
 
-    public String getLightColor(@NonNull String origColor) {
-        String equivalent = "";
-        switch (origColor) {
-            case "#1A1A1A":
-                equivalent = "#494949";
-                break;
-            case "#12A4D9":
-                equivalent = "#8EC5D9";
-                break;
-            case "#D9138A":
-                equivalent = "#F181C3";
-                break;
-            case "#E2D810":
-                equivalent = "#E2E165";
-                break;
+    public void applyColor(String color) {
+        int colorID = Color.parseColor(color);
+        int blackID = Color.parseColor("#000000");
+        int goldID = Color.parseColor("#FFD700");
+
+        if (color.equals("#494949")) { //black
+            int whiteID = Color.parseColor("#FFFFFF");
+
+            textTaskName.setTextColor(whiteID);
+            textDescription.setTextColor(whiteID);
+            textDate.setTextColor(whiteID);
+            textTitleDesc.setTextColor(goldID);
+            textTitleDate.setTextColor(goldID);
+            Objects.requireNonNull(getSupportActionBar()).
+                    setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_white));
+        } else if (color.equals("#E2E165")) { //yellow
+            int darkBlueID = Color.parseColor("#66553E");
+
+            textTaskName.setTextColor(blackID);
+            textDescription.setTextColor(blackID);
+            textDate.setTextColor(blackID);
+            textTitleDesc.setTextColor(darkBlueID);
+            textTitleDate.setTextColor(darkBlueID);
+            Objects.requireNonNull(getSupportActionBar())
+                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+        } else if (color.equals("#F181C3")) { //magenta
+            textTaskName.setTextColor(blackID);
+            textDescription.setTextColor(blackID);
+            textDate.setTextColor(blackID);
+            textTitleDesc.setTextColor(goldID);
+            textTitleDate.setTextColor(goldID);
+            Objects.requireNonNull(getSupportActionBar())
+                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+        } else {
+            int darkGreyID = Color.parseColor("#333333");
+
+            textTaskName.setTextColor(blackID);
+            textDescription.setTextColor(blackID);
+            textDate.setTextColor(blackID);
+            textTitleDesc.setTextColor(darkGreyID);
+            textTitleDate.setTextColor(darkGreyID);
+            Objects.requireNonNull(getSupportActionBar())
+                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
         }
-        return equivalent;
+
+        appBarLayout.setBackgroundColor(colorID);
+        scrollView.setBackgroundColor(colorID);
     }
 }

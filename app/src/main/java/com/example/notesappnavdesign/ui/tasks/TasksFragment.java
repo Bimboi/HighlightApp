@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,13 +30,17 @@ import com.example.notesappnavdesign.R;
 import com.example.notesappnavdesign.AllViewModel;
 import com.example.notesappnavdesign.ui.taskItem.TaskCreate;
 import com.example.notesappnavdesign.ui.taskItem.TaskView;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TasksFragment extends Fragment {
     public static final int CREATE_TASK_REQUEST = 1;
 
     private AllViewModel allViewModel;
+    private ConstraintLayout constraintLayout;
+    private AppBarLayout appBarLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +59,7 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChanged(List<ItemTask> itemTasks) {
                 adapterTask.setAllItemTask(itemTasks);
-                if (recyclerView.getLayoutManager().getItemCount() == 0) {
+                if (Objects.requireNonNull(recyclerView.getLayoutManager()).getItemCount() == 0) {
                     root.findViewById(R.id.noTasks).setVisibility(View.VISIBLE);
                     root.findViewById(R.id.noTasksText).setVisibility(View.VISIBLE);
                 }
@@ -63,13 +68,22 @@ public class TasksFragment extends Fragment {
 
         Toolbar toolbar = root.findViewById(R.id.toolbarTask);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+
+        SharedPreferences preferences = requireActivity().getSharedPreferences("My prefs", Context.MODE_PRIVATE);
+        int colorID = preferences.getInt("Color ID", 0);
+
+        constraintLayout = root.findViewById(R.id.allTasks_layout);
+        appBarLayout = root.findViewById(R.id.appBarTasks);
+
+        constraintLayout.setBackgroundColor(colorID);
+        appBarLayout.setBackgroundColor(colorID);
 
         adapterTask.setOnItemClickListener(new AllTaskAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ItemTask itemTask) {
-                SharedPreferences.Editor editor = getActivity().getSharedPreferences("My prefs", Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = requireActivity().getSharedPreferences("My prefs", Context.MODE_PRIVATE).edit();
                 editor.putInt("Task ID", itemTask.gettId());
                 editor.putString("Task Name", itemTask.getTaskName());
                 editor.putString("Task Description", itemTask.getTaskDesc());
@@ -88,16 +102,15 @@ public class TasksFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.create_nav_menu, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_add:
-                createTask();
+        if (item.getItemId() == R.id.navigation_add) {
+            createTask();
         }
         return false;
     }
@@ -106,6 +119,7 @@ public class TasksFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
+            assert data != null;
             String taskName = data.getStringExtra(TaskCreate.EXTRA_NAME);
             String description = data.getStringExtra(TaskCreate.EXTRA_DESCRIPTION);
             String taskDate = data.getStringExtra(TaskCreate.EXTRA_DATE);
@@ -115,8 +129,8 @@ public class TasksFragment extends Fragment {
             ItemTask itemTask = new ItemTask(taskName, description, taskDate, importance, color);
             allViewModel.insertTask(itemTask);
 
-            getView().findViewById(R.id.noTasks).setVisibility(View.INVISIBLE);
-            getView().findViewById(R.id.noTasksText).setVisibility(View.INVISIBLE);
+            requireView().findViewById(R.id.noTasks).setVisibility(View.INVISIBLE);
+            requireView().findViewById(R.id.noTasksText).setVisibility(View.INVISIBLE);
 
             Toast.makeText(getActivity(), "Successfully created new task", Toast.LENGTH_LONG).show();
         }

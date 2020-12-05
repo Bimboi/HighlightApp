@@ -27,6 +27,8 @@ import java.util.Locale;
 public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHolder> {
     private List<ItemTask> allItemTask = new ArrayList<>();
     private OnItemClickListener listener;
+    private int blackID = Color.parseColor("#000000");
+    private int whiteID = Color.parseColor("#FFFFFF");
 
     @NonNull
     @Override
@@ -40,12 +42,23 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
         ItemTask currentItemTask = allItemTask.get(position);
         Context context = holder.imageViewItemFlag.getContext();
+        String itemColor = currentItemTask.getTaskColor();
 
         holder.textViewItemTaskName.setText(currentItemTask.getTaskName());
         holder.textViewItemDate.setText(reformatDate(currentItemTask.getTaskDate()));
-        holder.imageViewItemFlag.setImageDrawable(getImageImportance(currentItemTask.getTaskImportance(),context));
+        holder.imageViewItemFlag.setImageDrawable(getImageImportance(currentItemTask.getTaskImportance(), itemColor, context));
         holder.imageViewItemOverdue.setImageDrawable(getImageOverdue(currentItemTask.getTaskDate(), context));
-        holder.cardView.setCardBackgroundColor(Color.parseColor(currentItemTask.getTaskColor()));
+        holder.cardView.setCardBackgroundColor(Color.parseColor(itemColor));
+
+        if(itemColor.equals("#494949")){
+            holder.imageViewSampleIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_assignment_white));
+            holder.textViewItemTaskName.setTextColor(whiteID);
+            holder.textViewItemDate.setTextColor(whiteID);
+        }else{
+            holder.imageViewSampleIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_assignment));
+            holder.textViewItemTaskName.setTextColor(blackID);
+            holder.textViewItemDate.setTextColor(blackID);
+        }
     }
 
     @Override
@@ -61,6 +74,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
     class TaskHolder extends RecyclerView.ViewHolder {
         private TextView textViewItemTaskName;
         private TextView textViewItemDate;
+        private ImageView imageViewSampleIcon;
         private ImageView imageViewItemFlag;
         private ImageView imageViewItemOverdue;
         private CardView cardView;
@@ -69,6 +83,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
             super(itemView);
             textViewItemTaskName = itemView.findViewById(R.id.itemTaskName);
             textViewItemDate = itemView.findViewById(R.id.itemDate);
+            imageViewSampleIcon = itemView.findViewById(R.id.sampleTaskIcon);
             imageViewItemFlag = itemView.findViewById(R.id.importance_label);
             imageViewItemOverdue = itemView.findViewById(R.id.overdue_label);
             cardView = itemView.findViewById(R.id.cardView);
@@ -98,6 +113,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             Date d = dateFormat.parse(date);
+            assert d != null;
             Log.d("New Date: ",d.toString());
             dateFormat.applyPattern("EEEE, MMM dd, yyyy");
             return dateFormat.format(d);
@@ -107,11 +123,19 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.TaskHold
         }
     }
 
-    public Drawable getImageImportance(int indicator, Context con){
-        if (indicator == 0) {
-            return ContextCompat.getDrawable(con, R.drawable.ic_important_notflag);
-        } else {
-            return ContextCompat.getDrawable(con, R.drawable.ic_important_flag);
+    public Drawable getImageImportance(int indicator, @NonNull String color, Context con){
+        if(color.equals("#494949")){
+            if (indicator == 0) {
+                return ContextCompat.getDrawable(con, R.drawable.ic_important_notflag_white);
+            } else {
+                return ContextCompat.getDrawable(con, R.drawable.ic_important_flag_white);
+            }
+        }else{
+            if (indicator == 0) {
+                return ContextCompat.getDrawable(con, R.drawable.ic_important_notflag);
+            } else {
+                return ContextCompat.getDrawable(con, R.drawable.ic_important_flag);
+            }
         }
     }
 
