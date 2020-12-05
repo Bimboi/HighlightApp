@@ -42,7 +42,7 @@ public class TaskView extends AppCompatActivity {
     public static final int EDIT_TASK_REQUEST = 2;
 
     private AllViewModel allViewModel;
-    private String name, desc, date, color;
+    private String name, desc, date, color, tempDesc = "No description";
     private Integer id, importance;
     private TextView textTaskName, textDescription, textDate, textTitleDesc, textTitleDate;
     private AppBarLayout appBarLayout;
@@ -86,16 +86,16 @@ public class TaskView extends AppCompatActivity {
         importance = preferences.getInt("Task Importance", 0);
         color = preferences.getString("Task Color", "");
 
-        if(desc.equals("")){ desc = "No description"; }
-
         textTaskName = findViewById(R.id.textName);
         textDescription = findViewById(R.id.textDescription);
         textDate = findViewById(R.id.textDate);
         textTitleDesc = findViewById(R.id.textTitleDescription);
         textTitleDate = findViewById(R.id.textTitleDate);
 
+        if(desc.equals("")){ textDescription.setText(tempDesc); }
+        else textDescription.setText(desc);
+
         textTaskName.setText(name);
-        textDescription.setText(desc);
         textDate.setText(reformatDate(date));
 
         appBarLayout = findViewById(R.id.appBarView);
@@ -138,8 +138,10 @@ public class TaskView extends AppCompatActivity {
             itemTask.settId(id);
             allViewModel.updateTask(itemTask);
 
+            if(description.equals("")){ textDescription.setText(tempDesc); }
+            else textDescription.setText(desc);
+
             textTaskName.setText(taskName);
-            textDescription.setText(description);
             textDate.setText(reformatDate(taskDate));
 
             updateActivityData(taskName, description, taskDate, importance, color);
