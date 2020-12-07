@@ -39,8 +39,6 @@ public class TasksFragment extends Fragment {
     public static final int CREATE_TASK_REQUEST = 1;
 
     private AllViewModel allViewModel;
-    private ConstraintLayout constraintLayout;
-    private AppBarLayout appBarLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,8 +72,8 @@ public class TasksFragment extends Fragment {
         SharedPreferences preferences = requireActivity().getSharedPreferences("My prefs", Context.MODE_PRIVATE);
         int colorID = preferences.getInt("Color ID", 0);
 
-        constraintLayout = root.findViewById(R.id.allTasks_layout);
-        appBarLayout = root.findViewById(R.id.appBarTasks);
+        ConstraintLayout constraintLayout = root.findViewById(R.id.allTasks_layout);
+        AppBarLayout appBarLayout = root.findViewById(R.id.appBarTasks);
 
         constraintLayout.setBackgroundColor(colorID);
         appBarLayout.setBackgroundColor(colorID);

@@ -56,6 +56,7 @@
         android:layout_height="wrap_content"
         android:text="@string/today_message"
         android:layout_marginTop="10dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/noTaskToday"
         app:layout_constraintRight_toRightOf="@id/noTaskToday"
         app:layout_constraintLeft_toLeftOf="@id/noTaskToday"

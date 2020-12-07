@@ -2,9 +2,6 @@ package com.example.notesappnavdesign.ui.taskItem;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +46,6 @@ public class TaskCreate extends AppCompatActivity{
     private EditText editTextDesc;
     private ImageView taskImportance;
     private boolean flag;
-    private String date;
     private String color;
     private String formatDay;
 
@@ -180,7 +176,6 @@ public class TaskCreate extends AppCompatActivity{
         if(!flag){
             taskImportance.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_important_flag));
             flag = true;
-            Log.d("Flag function:",flag+"");
         }else {
             taskImportance.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_important_notflag));
             flag = false;

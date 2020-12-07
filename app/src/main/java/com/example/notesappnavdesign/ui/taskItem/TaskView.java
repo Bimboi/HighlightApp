@@ -5,12 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,10 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.notesappnavdesign.ItemTask;
-import com.example.notesappnavdesign.MainActivity;
 import com.example.notesappnavdesign.R;
 import com.example.notesappnavdesign.AllViewModel;
-import com.example.notesappnavdesign.ui.tasks.TasksFragment;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.text.ParseException;
@@ -138,8 +134,9 @@ public class TaskView extends AppCompatActivity {
             itemTask.settId(id);
             allViewModel.updateTask(itemTask);
 
+            assert description != null;
             if(description.equals("")){ textDescription.setText(tempDesc); }
-            else textDescription.setText(desc);
+            else textDescription.setText(description);
 
             textTaskName.setText(taskName);
             textDate.setText(reformatDate(taskDate));
@@ -215,44 +212,49 @@ public class TaskView extends AppCompatActivity {
         int blackID = Color.parseColor("#000000");
         int goldID = Color.parseColor("#FFD700");
 
-        if (color.equals("#494949")) { //black
-            int whiteID = Color.parseColor("#FFFFFF");
+        switch (color) {
+            case "#494949":  //black
+                int whiteID = Color.parseColor("#FFFFFF");
 
-            textTaskName.setTextColor(whiteID);
-            textDescription.setTextColor(whiteID);
-            textDate.setTextColor(whiteID);
-            textTitleDesc.setTextColor(goldID);
-            textTitleDate.setTextColor(goldID);
-            Objects.requireNonNull(getSupportActionBar()).
-                    setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_white));
-        } else if (color.equals("#E2E165")) { //yellow
-            int darkBlueID = Color.parseColor("#66553E");
+                textTaskName.setTextColor(whiteID);
+                textDescription.setTextColor(whiteID);
+                textDate.setTextColor(whiteID);
+                textTitleDesc.setTextColor(goldID);
+                textTitleDate.setTextColor(goldID);
+                Objects.requireNonNull(getSupportActionBar()).
+                        setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_white));
+                break;
+            case "#E2E165":  //yellow
+                int darkBlueID = Color.parseColor("#66553E");
 
-            textTaskName.setTextColor(blackID);
-            textDescription.setTextColor(blackID);
-            textDate.setTextColor(blackID);
-            textTitleDesc.setTextColor(darkBlueID);
-            textTitleDate.setTextColor(darkBlueID);
-            Objects.requireNonNull(getSupportActionBar())
-                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
-        } else if (color.equals("#F181C3")) { //magenta
-            textTaskName.setTextColor(blackID);
-            textDescription.setTextColor(blackID);
-            textDate.setTextColor(blackID);
-            textTitleDesc.setTextColor(goldID);
-            textTitleDate.setTextColor(goldID);
-            Objects.requireNonNull(getSupportActionBar())
-                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
-        } else {
-            int darkGreyID = Color.parseColor("#333333");
+                textTaskName.setTextColor(blackID);
+                textDescription.setTextColor(blackID);
+                textDate.setTextColor(blackID);
+                textTitleDesc.setTextColor(darkBlueID);
+                textTitleDate.setTextColor(darkBlueID);
+                Objects.requireNonNull(getSupportActionBar())
+                        .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+                break;
+            case "#F181C3":  //magenta
+                textTaskName.setTextColor(blackID);
+                textDescription.setTextColor(blackID);
+                textDate.setTextColor(blackID);
+                textTitleDesc.setTextColor(goldID);
+                textTitleDate.setTextColor(goldID);
+                Objects.requireNonNull(getSupportActionBar())
+                        .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+                break;
+            default:
+                int darkGreyID = Color.parseColor("#333333");
 
-            textTaskName.setTextColor(blackID);
-            textDescription.setTextColor(blackID);
-            textDate.setTextColor(blackID);
-            textTitleDesc.setTextColor(darkGreyID);
-            textTitleDate.setTextColor(darkGreyID);
-            Objects.requireNonNull(getSupportActionBar())
-                    .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+                textTaskName.setTextColor(blackID);
+                textDescription.setTextColor(blackID);
+                textDate.setTextColor(blackID);
+                textTitleDesc.setTextColor(darkGreyID);
+                textTitleDate.setTextColor(darkGreyID);
+                Objects.requireNonNull(getSupportActionBar())
+                        .setHomeAsUpIndicator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_back_black));
+                break;
         }
 
         appBarLayout.setBackgroundColor(colorID);

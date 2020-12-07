@@ -57,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/all_tasks_message"
+        android:textColor="@color/colorBlack"
         android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@id/noTasks"
         app:layout_constraintRight_toRightOf="@id/noTasks"

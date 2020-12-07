@@ -12,11 +12,6 @@
         tools:layout="@layout/fragment_today" />
 
     <fragment
-        android:id="@+id/navigation_schedules"
-        android:name="com.example.notesappnavdesign.ui.schedules.SchedulesFragment"
-        android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedules" />
-    <fragment
         android:id="@+id/navigation_important"
         android:name="com.example.notesappnavdesign.ui.important.ImportantFragment"
         android:label="@string/title_important"

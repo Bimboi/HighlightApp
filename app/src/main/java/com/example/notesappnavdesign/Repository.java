@@ -1,7 +1,6 @@
 package com.example.notesappnavdesign;
 
 import android.app.Application;
-import android.content.ClipData;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -10,11 +9,10 @@ import java.util.List;
 
 public class Repository {
     private TaskDao taskDao;
-    private TasksDatabase database;
     private LiveData<List<ItemTask>> allTask, allToday, allImportant, allOverdue;
 
     public Repository(Application application){
-        database = TasksDatabase.getInstance(application);
+        TasksDatabase database = TasksDatabase.getInstance(application);
         taskDao = database.getTaskDao();
         allTask = taskDao.getAllTask();
         allToday = taskDao.getTodayTask();
