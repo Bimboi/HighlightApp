@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Basic TODO</string>
+    <string name="app_name">Highlight!</string>
     <string name="title_tasks">All Tasks</string>
     <string name="title_today">Today</string>
     <string name="title_schedule">Schedule</string>
